@@ -1,0 +1,122 @@
+import { afterRender, Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { ApiService } from '../../../services/api.service';
+import Swal from 'sweetalert2';
+import { Solicitud } from '../../../models/general/solicitud';
+import { MatIcon } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-solicitudes',
+  standalone: true,
+  imports: [MatIcon],
+  templateUrl: './solicitudes.component.html',
+  styleUrl: './solicitudes.component.css'
+})
+export class SolicitudesComponent {
+
+  division:string = ""
+  solicitudes:Solicitud[]
+  controlSort:boolean = true
+  icon:string = "north"
+
+  constructor(private accionesService: ApiService, private activatedroute: ActivatedRoute) {
+    afterRender(()=>{
+      this.activatedroute.params.subscribe(params => {
+        this.division = params['division'];
+        this.obtenerLista()
+      })
+    })
+   }
+
+   obtenerLista(){
+    this.accionesService.obtenerSolicitudes(this.division).subscribe(res=>{
+      this.solicitudes = res
+    },error=>{
+      console.log(error)
+    })
+  }
+
+  ordenarPorFecha(): void {
+
+    console.log(this.controlSort)
+
+    if(this.controlSort){ //falso se ordena del mas reciente
+      this.solicitudes.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      this.icon = "south"
+      this.controlSort = false
+    } else{
+      this.solicitudes.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+      this.icon ="north"
+      this.controlSort = true
+    }
+
+
+  }
+
+  ordenarPorNombre(): void {
+    this.icon = ""
+    this.solicitudes.sort((a,b)=> a.nombre.localeCompare(b.nombre))
+  }
+
+  ordenarPorArea(): void {
+    this.icon = ""
+    this.solicitudes.sort((a,b)=> a.area.localeCompare(b.area))
+  }
+
+  downloadFile(fileName: string, base64Content: string): void {
+    const byteCharacters = atob(base64Content);
+    const byteNumbers = new Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/octet-stream' });
+
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = fileName;
+    link.click();
+  }
+
+  borrar(id:number){
+
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "No podrás revertir esto!",
+      icon: 'warning',
+      iconColor:"#B30000",
+      showCancelButton: true,
+      confirmButtonColor:"#B30000",
+      cancelButtonColor:"#B30000",
+      confirmButtonText: 'Sí, eliminar!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        this.accionesService.eliminarSolicitud(id).subscribe(()=>{
+          Swal.fire({
+            title:"Eliminado",
+            icon:"success",
+            iconColor:"#B30000",
+            confirmButtonColor:"#B30000"
+          }).then(()=>{
+            this.obtenerLista()
+          })
+        }, (error)=>{
+          Swal.fire({
+            icon:"error",
+            iconColor:"#B30000",
+            title:"Error al eliminar",
+            confirmButtonColor:"#B30000",
+            text: error.error
+          })
+        })
+      }
+    })
+  }
+
+  goBack() {
+    window.history.back();
+  }
+
+}
