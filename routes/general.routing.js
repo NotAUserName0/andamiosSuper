@@ -54,6 +54,11 @@ router.get('/obtenerCategorias', andamiosController.obtenerCategorias)
 router.get('/obtenerCategoria/:id', andamiosController.obtenerCategoria)
 router.put('/modificarCategoria',andamiosController.modificarCategoria)
 router.delete('/eliminarCategoria/:id', andamiosController.eliminarCategoria)
+//SUCURSALES
+router.post('/crearSucursal', andamiosController.crearSucursal)
+router.get('/obtenerSucursales/:division', andamiosController.obtenerSucursales)
+router.put('/modificarSucursal', andamiosController.modificarSucursal)
+router.delete('/eliminarSucursal/:id', andamiosController.eliminarSucursal)
 
 router.get('/navbar/:area', andamiosController.navbar)
 

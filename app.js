@@ -6,6 +6,7 @@ require('dotenv').config()
 
 //rutas
 const general = require('./routes/general.routing');
+const andamios = require('./routes/andamios.routing');
 const api = require('./routes/api.routing');
 
 db.checkDatabaseConnection().then(() => {
@@ -15,6 +16,7 @@ db.checkDatabaseConnection().then(() => {
     }))
 
     app.use('/general', general);
+    app.use('/andamios', andamios);
     //app.use('/api', api);
 
 

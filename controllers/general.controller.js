@@ -7,6 +7,7 @@ const Imagenes_Subseccion = require("../models/general/imagenes_subseccion")
 const Archivos_Subseccion = require("../models/general/archivos_subseccion")
 const Contactos = require("../models/general/contactos")
 const Solicitudes = require("../models/general/solicitudes")
+const Sucursales = require("../models/general/sucursales")
 
 const ImageValidator = require("../common/validator")
 
@@ -768,6 +769,67 @@ async function eliminarSolicitud(req, res) {
     }
 }
 
+//Sucursales
+async function crearSucursal(req, res) {
+    try{
+
+        const {nombre,direccion,maps,telefono, division} = req.body
+
+        await Sucursales.create({nombre:nombre, direccion:direccion,maps:maps,telefonos:telefono, division:division}).then(()=>{
+            res.status(200).json({message:"ok"})
+        }).catch((err)=>{
+            res.status(500).send({message:"error"})
+        })
+
+
+    }catch(error){
+        res.status(500).send('error: ' + error)
+    }
+}
+
+async function obtenerSucursales(req,res){
+    try{
+        const {division} = req.params
+
+        await Sucursales.findAll({where:{division:division}}).then((rows)=>{
+            res.status(200).send(rows)
+        }).catch((err)=>{
+            res.status(500).json({message:err})
+        })
+    }catch(err){
+        res.status(500).json({message: "error"})
+    }
+}
+
+async function eliminarSucursal(req,res){
+    try{
+        const id = req.params.id
+
+        await Sucursales.destroy({where:{id:id}}).then(()=>{
+            res.status(200).json({message:"ok"})
+        })
+
+    }catch(err){
+        res.status(500).json({message: "error"})
+    }
+}
+
+async function modificarSucursal(req,res){
+
+    try{
+        const {id, nombre,direccion,maps,telefono} = req.body
+
+        await Sucursales.update({nombre:nombre, direccion:direccion,maps:maps,telefonos:telefono},{where:{id:id}}).then(()=>{
+            res.status(200).json({message:"ok"})
+        }).catch((err)=>{
+            res.status(500).json({message:"error"})
+        })
+
+    }catch(err){
+        res.status(500).json({message:"error"})
+    }
+}
+
 
 module.exports = {
     //CRUD CATEOGORIA
@@ -814,7 +876,12 @@ module.exports = {
     eliminarSolicitudContacto,
     //SOLICITUDES
     obtenerSolicitudes,
-    eliminarSolicitud
+    eliminarSolicitud,
+    //SUCURSALES
+    crearSucursal,
+    obtenerSucursales,
+    eliminarSucursal,
+    modificarSucursal
 
 }
 
