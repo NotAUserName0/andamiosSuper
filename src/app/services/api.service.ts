@@ -7,6 +7,7 @@ import { SeccionSingle } from '../models/general/seccionSingle';
 import { SubseccionSingle } from '../models/general/subseccionSingle';
 import { SolicitudContacto } from '../models/general/solicitud-contacto';
 import { Solicitud } from '../models/general/solicitud';
+import { Sucursal } from '../models/general/sucursal';
 
 @Injectable({
   providedIn: 'root'
@@ -149,5 +150,18 @@ export class ApiService {
 
   eliminarSolicitud(id){
     return this.http.delete(`${this.URL}/eliminarSolicitud/${id}`);
+  }
+
+  //Sucursales
+  obtenerSucursales(division:string):Observable<Sucursal[]>{
+    return this.http.get<Sucursal[]>(`${this.URL}/obtenerSucursales/${division}`);
+  }
+
+  eliminarSucursal(id){
+    return this.http.delete(`${this.URL}/eliminarSucursal/${id}`);
+  }
+
+  modificarSucursal(sucursal:any){
+    return this.http.put(`${this.URL}/modificarSucursal`,sucursal);
   }
 }
