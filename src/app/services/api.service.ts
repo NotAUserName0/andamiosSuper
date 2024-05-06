@@ -8,6 +8,7 @@ import { SubseccionSingle } from '../models/general/subseccionSingle';
 import { SolicitudContacto } from '../models/general/solicitud-contacto';
 import { Solicitud } from '../models/general/solicitud';
 import { Sucursal } from '../models/general/sucursal';
+import { Comunicado } from '../models/comunicado';
 
 @Injectable({
   providedIn: 'root'
@@ -162,6 +163,39 @@ export class ApiService {
   }
 
   modificarSucursal(sucursal:any){
-    return this.http.put(`${this.URL}/modificarSucursal`,sucursal);
+    return this.http.put(`${this.URL}/modificarSucursal`,sucursal, this.httpOptions);
+  }
+
+  agregarSucursal(sucursal:any){
+    return this.http.post(`${this.URL}/crearSucursal`,sucursal, this.httpOptions);
+  }
+
+  obtenerImagenSucursal(sucursal:any){
+    return this.http.post(`${this.URL}/obtenerImagenesSucursal`, sucursal, this.httpOptions);
+  }
+
+  agregarImagenSucursal(sucursal:any){
+    return this.http.post(`${this.URL}/agregarImagenASucursal`, sucursal)
+  }
+
+  modificarImagenSucursal(sucursal:any){
+    return this.http.put(`${this.URL}/modificarImagenSucursal`, sucursal);
+  }
+
+  //PROVEEDORES
+  obtenerComunicados():Observable<Comunicado[]>{
+    return this.http.get<Comunicado[]>(`${this.URL}/obtenerComunicados`)
+  }
+
+  eliminarComunicado(id:any){
+    return this.http.delete(`${this.URL}/eliminarComunicado/${id}`)
+  }
+
+  crearComunicado(comunicado:any){
+    return this.http.post(`${this.URL}/crearComunicado`, comunicado, this.httpOptions)
+  }
+
+  subirArchivo(data:FormData){
+    return this.http.post(`${this.URL}/subirArchivo`, data)
   }
 }

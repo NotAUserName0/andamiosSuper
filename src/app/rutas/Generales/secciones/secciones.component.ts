@@ -162,4 +162,8 @@ export class SeccionesComponent {
   actualizarNavbar() {
     this.obtenerCategorias();
   }
+
+  goBack() {
+    window.history.back();
+  }
 }

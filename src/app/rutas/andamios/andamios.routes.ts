@@ -16,5 +16,5 @@ export const routes: Routes = [
   { path: "carrusel", component:CarruselAndamiosComponent },
   { path: "anuncio", component: AnuncioComponent},
   { path: "sucursales/:division", component: SucursalesAndamiosComponent },
-  { path: "**", redirectTo: "home"}
+  //{ path: "**", redirectTo: "home"}
 ];

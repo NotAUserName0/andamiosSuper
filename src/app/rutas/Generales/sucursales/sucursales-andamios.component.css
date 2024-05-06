@@ -4,6 +4,41 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  padding-bottom: 30px;
+  position: relative;
+}
+
+.exit-btn{
+  position: absolute;
+  top: 40px;
+  left: 5%;
+  cursor: pointer;
+  border: 1px solid var(--color-primario);
+  border-radius: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 25px;
+  font-size: 35px;
+  color: var(--color-primario);
+}
+
+.exit-btn:hover{
+  background-color: var(--color-primario);
+  color: white;
+}
+
+img{
+  width: 500px;
+  height: auto;
+}
+
+.imagen{
+  margin-bottom: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 h1{
@@ -51,3 +86,10 @@ h1{
   color: white;
 }
 
+.btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  margin-top: 40px;
+}

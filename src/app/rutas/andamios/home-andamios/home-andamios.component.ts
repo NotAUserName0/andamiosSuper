@@ -22,9 +22,7 @@ export class HomeAndamiosComponent {
     {icon: "carrusel.svg", title: "Carrusel", description: "Modifica imágenes del carrusel", url:"carrusel"},
     {icon: "anuncio.svg", title: "Anuncio", description: "Modifica el anuncio principal", url:"anuncio"},
     {icon:'negocio.svg', title:'Sucursales', description:'Edita las sucursales ', url:'sucursales/andamios'},
-    {icon:'proveedor.svg', title:'Proveedores', description:'PDF/Comunicados/Links', url:'proveedores'},
-    {icon:'cliente.svg', title:'Clientes', description:'PDF/Links', url:'clientes'},
-    {icon: 'pagina.svg', title: 'Página', description: 'Agrega secciones, categorias y subsecciones a tu pagina', url: 'secciones/andamios'},
+    {icon: 'page.svg', title: 'Página', description: 'Modifica tu pagina', url: 'secciones/andamios'},
   ]
 
   constructor() { }

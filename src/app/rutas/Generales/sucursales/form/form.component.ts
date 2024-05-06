@@ -1,12 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { Sucursal } from '../../../../models/general/sucursal';
 import { fadeInAnimation } from '../../../../effects/fadeIn';
+import { MatIcon } from '@angular/material/icon';
+import { ApiService } from '../../../../services/api.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form',
   standalone: true,
-  imports: [FormsModule , ReactiveFormsModule],
+  imports: [FormsModule , ReactiveFormsModule, MatIcon],
   templateUrl: './form.component.html',
   styleUrl: './form.component.css',
   animations:[fadeInAnimation]
@@ -14,9 +17,10 @@ import { fadeInAnimation } from '../../../../effects/fadeIn';
 export class FormComponent {
 
   @Input() sucursal:Sucursal;
+  @Output() cerrar = new EventEmitter<void>();
   form:FormGroup
 
-  constructor(private fb:FormBuilder){
+  constructor(private fb:FormBuilder, private apiService:ApiService){
     this.form = this.fb.group({
       nombre:[''],
       direccion:[''],
@@ -32,6 +36,67 @@ export class FormComponent {
       telefono: this.sucursal.telefono,
       maps: this.sucursal.maps
     })
+  }
+
+  close(){
+    document.getElementById('contenedor').classList.add('fadeOut')
+    setTimeout(() => {
+      this.form.reset()
+      this.cerrar.emit();
+    },500)
+  }
+
+  subir(){
+    //console.log(this.form.value)
+
+    if(this.sucursal.id){
+      let sucursalNueva = {
+        id: this.sucursal.id,
+        ...this.form.value
+      }
+      this.apiService.modificarSucursal(JSON.stringify(sucursalNueva)).subscribe(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Sucursal modificada',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          this.close()
+        })
+      },error=>{
+        console.log(error)
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al modificar',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      })
+    }else{
+      let sucursalNueva = {
+          division: this.sucursal.division,
+        ...this.form.value
+      }
+
+      this.apiService.agregarSucursal(JSON.stringify(sucursalNueva)).subscribe(() => {
+        Swal.fire({
+          icon: 'success',
+          title: 'Sucursal agregada',
+          showConfirmButton: false,
+          timer: 1500
+        }).then(() => {
+          this.close()
+        })
+      },error=>{
+        console.log(error)
+        Swal.fire({
+          icon: 'error',
+          title: 'Error al agregar',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      })
+    }
   }
 
 }

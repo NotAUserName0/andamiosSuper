@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { afterRender, Component } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { Sucursal } from '../../../models/general/sucursal';
@@ -24,17 +24,22 @@ export class SucursalesAndamiosComponent {
   division: string = ''
   form:boolean = false;
   sucursal:Sucursal
+  imagen:any
 
   constructor(private fb: FormBuilder, private accionesService: ApiService, private activatedroute: ActivatedRoute) {
-
   }
 
   ngOnInit() {
     this.activatedroute.params.subscribe(params => {
       this.division = params['division'];
-      this.accionesService.obtenerSucursales(this.division).subscribe((data:Sucursal[]) => {
-        this.sucursales = data;
-      })
+      this.obtenerSucursales();
+    })
+  }
+
+  obtenerSucursales(){
+    this.accionesService.obtenerSucursales(this.division).subscribe((data:Sucursal[]) => {
+      this.sucursales = data;
+        this.obtenerImagen();
     })
   }
 
@@ -45,8 +50,7 @@ export class SucursalesAndamiosComponent {
       icon: 'warning',
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
-      confirmButtonText: '¡Sí, bórralo!'
+      cancelButtonColor: '#B30000',
     }).then((result) => {
       if (result.isConfirmed) {
         this.accionesService.eliminarSucursal(element.id).subscribe(() => {
@@ -58,7 +62,8 @@ export class SucursalesAndamiosComponent {
           title: '¡Eliminado!',
           text: 'La sucursal ha sido eliminada.',
           icon: 'success',
-          timer: 2000
+          timer: 2000,
+          showConfirmButton: false
         })
       }
     })
@@ -66,7 +71,105 @@ export class SucursalesAndamiosComponent {
 
   showForm(elemento){
     this.form = true;
-    this.sucursal = elemento;
+    let sucursal = {
+      id: elemento.id,
+      nombre: elemento.nombre,
+      direccion: elemento.direccion,
+      telefono: elemento.telefono,
+      maps: elemento.maps,
+      division: this.division
+    }
+    this.sucursal = sucursal;
+  }
+
+  obtenerImagen(){
+    let imagen = {
+      main: true
+    }
+    this.accionesService.obtenerImagenSucursal(JSON.stringify(imagen)).subscribe((data:any) => {
+      this.imagen = data[0];
+    })
+
+  }
+
+  agregarImagen(){
+    const input = document.createElement('input')
+    input.type = 'file'
+
+    input.onchange = () => {
+      const file = input.files[0]
+      const formData = new FormData()
+      const main = true;
+      formData.append(file.name, file, file.name)
+      formData.append("main",main.toString())
+
+      this.accionesService.agregarImagenSucursal(formData).subscribe(()=>{
+        Swal.fire({
+          title:'Agregada con exito!',
+          showConfirmButton: false,
+          icon: 'success',
+          timer: 5000
+        }).then(()=>{
+          this.obtenerImagen()
+        })
+      },error=>{
+        Swal.fire({
+          title: 'Error al agregar imagen',
+          text: error,
+          icon:'warning',
+        })
+      })
+    }
+
+    input.click()
+  }
+
+  modificarImagen(){
+    const input = document.createElement('input')
+    input.type = 'file'
+
+    input.onchange = () => {
+      const file = input.files[0]
+      const formData = new FormData()
+      formData.append("id",this.imagen.id)
+      formData.append(file.name, file, file.name)
+      formData.append("main",this.imagen.main.toString())
+
+      this.accionesService.modificarImagenSucursal(formData).subscribe(()=>{
+        Swal.fire({
+          title:'Modificada con exito!',
+          showConfirmButton: false,
+          icon: 'success',
+          timer: 5000
+        }).then(()=>{
+          this.obtenerImagen()
+        })
+      },error=>{
+        Swal.fire({
+          title: 'Error al modificar imagen',
+          text: error,
+          icon:'warning',
+        })
+      })
+    }
+
+    input.click()
+
+  }
+
+  agregar(){
+    this.form = true;
+    this.sucursal = new Sucursal();
+    this.sucursal.division = this.division;
+  }
+
+  closeForm(){
+      this.form = false;
+      this.obtenerSucursales();
+  }
+
+  goBack() {
+    window.history.back();
   }
 
 }

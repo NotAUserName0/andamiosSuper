@@ -1,6 +1,7 @@
 <div class="contenedor">
   <div class="seleccion">
     <cdk-virtual-scroll-viewport itemSize="" class="categorias">
+      <mat-icon class="exit-btn" (click)="goBack()">arrow_back</mat-icon>
       @for (categoria of categorias; track categoria.idCategoria) {
       <mat-expansion-panel>
         <mat-expansion-panel-header>
