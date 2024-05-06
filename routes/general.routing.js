@@ -45,6 +45,10 @@ router.delete('/eliminarSolicitudContacto/:id',andamiosController.eliminarSolici
 router.get('/obtenerSolicitudes/:area',andamiosController.obtenerSolicitudes)
 router.delete('/eliminarSolicitud/:id',andamiosController.eliminarSolicitud)
 
+//IMAGENES SUCURSALES
+router.post('/agregarImagenASucursal', upload.any(), andamiosController.agregarImagenSucursal)
+router.put('/modificarImagenSucursal', upload.any(), andamiosController.modificarImagenSucursal)
+
 //zona JSON /////////////////////////////////////////////////////////////////////////////////////////////////
 router.use(express.json())
 
@@ -59,6 +63,12 @@ router.post('/crearSucursal', andamiosController.crearSucursal)
 router.get('/obtenerSucursales/:division', andamiosController.obtenerSucursales)
 router.put('/modificarSucursal', andamiosController.modificarSucursal)
 router.delete('/eliminarSucursal/:id', andamiosController.eliminarSucursal)
+//IMAGENES SUCURSALES
+router.post('/obtenerImagenesSucursal', andamiosController.obtenerImagenSucursal)
+//COMUNICADOS
+router.post('/crearComunicado', andamiosController.crearComunicado)
+router.get('/obtenerComunicados', andamiosController.obtenerComunicados)
+router.delete('/eliminarComunicado/:id', andamiosController.eliminarComunicado)
 
 router.get('/navbar/:area', andamiosController.navbar)
 

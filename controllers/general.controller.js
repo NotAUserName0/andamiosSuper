@@ -8,6 +8,8 @@ const Archivos_Subseccion = require("../models/general/archivos_subseccion")
 const Contactos = require("../models/general/contactos")
 const Solicitudes = require("../models/general/solicitudes")
 const Sucursales = require("../models/general/sucursales")
+const Imagenes_Sucursales = require("../models/general/imagenes_sucursales")
+const Comunicados = require("../models/proveedores")
 
 const ImageValidator = require("../common/validator")
 
@@ -775,10 +777,10 @@ async function crearSucursal(req, res) {
 
         const {nombre,direccion,maps,telefono, division} = req.body
 
-        await Sucursales.create({nombre:nombre, direccion:direccion,maps:maps,telefonos:telefono, division:division}).then(()=>{
+        await Sucursales.create({nombre:nombre, direccion:direccion,maps:maps,telefono:telefono, division:division}).then(()=>{
             res.status(200).json({message:"ok"})
         }).catch((err)=>{
-            res.status(500).send({message:"error"})
+            res.status(500).send({message:"error: "+err})
         })
 
 
@@ -822,7 +824,66 @@ async function modificarSucursal(req,res){
         await Sucursales.update({nombre:nombre, direccion:direccion,maps:maps,telefonos:telefono},{where:{id:id}}).then(()=>{
             res.status(200).json({message:"ok"})
         }).catch((err)=>{
-            res.status(500).json({message:"error"})
+            res.status(500).json({message:"error: "+err})
+        })
+
+    }catch(err){
+        res.status(500).json({message:"error: "+err})
+    }
+}
+
+//IMAGENES SUCURSALES
+async function obtenerImagenSucursal(req,res){
+    try{
+        const {id, main} = req.body
+
+        if(main === true){
+            await Imagenes_Sucursales.findAll({where:{main:true}}).then((rows)=>{
+                res.status(200).send(rows)
+            }).catch((err)=>{
+                res.status(500).json({message:err})
+            })
+        }else{
+            await Imagenes_Sucursales.findAll({where:{id_sucursal:id}}).then((rows)=>{
+                res.status(200).send(rows)
+            }).catch((err)=>{
+                res.status(500).json({message:err})
+            })
+        }
+
+        
+    }catch(err){
+        res.status(500).json({message:"error"})
+    }
+
+}
+
+async function agregarImagenSucursal(req,res){
+    try{
+        const {id_sucursal, main} = req.body
+        const file = req.files[0]
+
+        await Imagenes_Sucursales.create({nombre:file.fieldname, file: "data:image/*;base64," + file.buffer.toString('base64'), id_sucursal:id_sucursal, main:Boolean(main)}).then(()=>{
+            res.status(200).json({message:"ok"})
+        }).catch((err)=>{
+            res.status(500).json({message:"error: "+err})
+        })
+
+    }catch(err){
+        res.status(500).json({message:"error"})
+    }
+
+}
+
+async function modificarImagenSucursal(req,res){
+    try{
+        const {id, main} = req.body
+        const file = req.files[0]
+
+        await Imagenes_Sucursales.update({nombre:file.fieldname, file: "data:image/*;base64," + file.buffer.toString('base64'), main:Boolean(main)},{where:{id:id}}).then(()=>{
+            res.status(200).json({message:"ok"})
+        }).catch((err)=>{
+            res.status(500).json({message:"error: "+err})
         })
 
     }catch(err){
@@ -830,6 +891,48 @@ async function modificarSucursal(req,res){
     }
 }
 
+//Comunicados
+async function obtenerComunicados(req,res){
+    try{
+        await Comunicados.findAll().then((rows)=>{
+            res.status(200).send(rows)
+        }).catch((err)=>{
+            res.status(500).json({message:err})
+        })
+    }catch(err){
+        res.status(500).json({message:"error"})
+    }
+}
+
+async function crearComunicado(req,res){
+    try{
+        const {titulo, comunicado, link} = req.body
+
+        await Comunicados.create({titulo:titulo, comunicado:comunicado, link:link}).then(()=>{
+            res.status(200).json({message:"ok"})
+        }).catch((err)=>{
+            res.status(500).json({message:"error: "+err})
+        })
+
+    }catch(err){
+        res.status(500).json({message:"error"})
+    }
+
+}
+
+async function eliminarComunicado(req,res){
+    try{
+        const id = req.params.id
+
+        await Comunicados.destroy({where:{id:id}}).then(()=>{
+            res.status(200).json({message:"ok"})
+        })
+
+    }catch(err){
+        res.status(500).json({message: "error"})
+    }
+
+}
 
 module.exports = {
     //CRUD CATEOGORIA
@@ -881,7 +984,16 @@ module.exports = {
     crearSucursal,
     obtenerSucursales,
     eliminarSucursal,
-    modificarSucursal
+    modificarSucursal,
+    //CRUD IMAGENES SUCURSALES
+    obtenerImagenSucursal,
+    agregarImagenSucursal,
+    modificarImagenSucursal,
+    //COMUNICADOS
+    obtenerComunicados,
+    crearComunicado,
+    eliminarComunicado
+    
 
 }
 
