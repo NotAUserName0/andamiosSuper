@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import Swal from 'sweetalert2';
+import { JwtService } from '../../services/jwt.service';
 
 @Component({
   selector: 'app-navbar',
@@ -14,13 +15,13 @@ export class NavbarComponent {
   user:any
   iconoActual:string = "menu"
 
-  constructor(private router:Router){
-    //this.user = tokenService.obtenerClaims()
+  constructor(private router:Router, private tokenService:JwtService){
+    this.user = tokenService.obtenerClaims()
   }
 
 
   cerrarSesion(){
-    localStorage.removeItem("token")
+    this.tokenService.deleteToken()
     Swal.fire({
       title:"Adiós..!",
       timer:3000,
@@ -42,10 +43,6 @@ export class NavbarComponent {
     }
 
     document.getElementById("contenido").classList.toggle("show")
-  }
-
-  mostrarSubmenu(){
-    console.log("clicked")
-  }
+  } 
 
 }

@@ -84,7 +84,8 @@ export class SucursalesAndamiosComponent {
 
   obtenerImagen(){
     let imagen = {
-      main: true
+      main: true,
+      division: this.division
     }
     this.accionesService.obtenerImagenSucursal(JSON.stringify(imagen)).subscribe((data:any) => {
       this.imagen = data[0];

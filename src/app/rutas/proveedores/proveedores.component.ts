@@ -4,6 +4,7 @@ import Swal from 'sweetalert2';
 import { ApiService } from '../../services/api.service';
 import { MatIconModule } from '@angular/material/icon';
 import { Comunicado } from '../../models/comunicado';
+import { Archivo } from '../../models/archivo';
 
 @Component({
   selector: 'app-proveedores',
@@ -18,6 +19,7 @@ export class ProveedoresComponent {
   file: File
   comunicado:FormGroup
   comunicados:Comunicado[] = []
+  pdf:Archivo
 
   constructor(private accionesService:ApiService , private fb:FormBuilder) {
     this.comunicado = this.fb.group({
@@ -49,6 +51,13 @@ export class ProveedoresComponent {
         comunicado.createdAt = formattedDate;
       });
       this.comunicados = data
+      this.obtenerPDF('proveedores')
+    })
+  }
+
+  obtenerPDF(origen){
+    this.accionesService.obtenerArchivo(origen).subscribe((data)=>{
+      this.pdf = data
     })
   }
 
@@ -58,20 +67,19 @@ export class ProveedoresComponent {
         title: 'Comunicado eliminado',
         text: 'Los cambios se han realizado con éxito',
         icon: 'success',
-        confirmButtonText: 'Aceptar'
+        timer:2000
       }).then(()=>{
         this.obtenerComunicados()
       })
     })
   }
 
-
   subir() {
     if (this.accion == "pdf") { //PDF
       const formData = new FormData();
 
-      formData.append('pdf', this.file, this.file.name);
-      formData.append('categoria', 'proveedores');
+      formData.append(this.file.name, this.file, this.file.name);
+      formData.append('origen', 'proveedores');
 
       this.accionesService.subirArchivo(formData).subscribe((data) => {
         Swal.fire({
@@ -81,12 +89,14 @@ export class ProveedoresComponent {
           confirmButtonText: 'Aceptar'
         }).then(()=>{
           this.file = null
-          this.accion = ""
+          //this.accion = ""
+          this.obtenerPDF('proveedores')
         })
       },err=>{
+        console.log(err)
         Swal.fire({
           title: 'No se han realizado cambios',
-          text: err,
+          text: JSON.stringify(err),
           icon: 'info',
           confirmButtonText: 'Aceptar'
         })

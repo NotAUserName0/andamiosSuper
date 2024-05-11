@@ -9,6 +9,7 @@ import { SolicitudContacto } from '../models/general/solicitud-contacto';
 import { Solicitud } from '../models/general/solicitud';
 import { Sucursal } from '../models/general/sucursal';
 import { Comunicado } from '../models/comunicado';
+import { Archivo } from '../models/archivo';
 
 @Injectable({
   providedIn: 'root'
@@ -197,5 +198,10 @@ export class ApiService {
 
   subirArchivo(data:FormData){
     return this.http.post(`${this.URL}/subirArchivo`, data)
+  }
+
+  obtenerArchivo(origen:string):Observable<Archivo>{
+    return this.http.get<Archivo>(`${this.URL}/obtenerArchivo/${origen}`)
+
   }
 }

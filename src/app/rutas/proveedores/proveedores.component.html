@@ -18,6 +18,7 @@
       <label for="" class="form-label"></label>
       <input type="file" class="form-control" accept=".pdf" (change)="onFileChange($event)">
     </div>
+    <small> {{pdf?.nombre}} </small>
     <button class="btn btn-outline-danger" (click)="subir()">Subir PDF</button>
   </div>
   }
@@ -52,5 +53,5 @@
   }
 
 
-  
+
 </div>
