@@ -10,7 +10,7 @@ import { appGuard } from './guards/app.guard';
 import { PerfilComponent } from './rutas/admin/perfil/perfil.component';
 
 export const routes: Routes = [
-
+  { path: 'login', component:LoginComponent, canActivate: [loginGuard]},
   {path:'', component:ApplicationComponent, children:[
     {path:'', redirectTo: 'inicio', pathMatch: 'full'},
     {path: 'inicio', component: InicioComponent},
@@ -20,7 +20,6 @@ export const routes: Routes = [
     {path: 'conten', loadChildren: function() { return import('./rutas/conten/conten.routes').then(m => m.routes); }},
     {path: 'usuarios', component: UsuariosComponent },
     {path: 'perfil', component: PerfilComponent}
-  ], canActivate: [appGuard]},
-  { path: 'login', component:LoginComponent, canActivate: [loginGuard]}
+  ], canActivate: [appGuard]}
 
 ];
