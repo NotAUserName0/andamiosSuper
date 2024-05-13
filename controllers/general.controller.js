@@ -10,6 +10,7 @@ const Solicitudes = require("../models/general/solicitudes")
 const Sucursales = require("../models/general/sucursales")
 const Imagenes_Sucursales = require("../models/general/imagenes_sucursales")
 const Comunicados = require("../models/proveedores")
+const Archivos = require("../models/archivos")
 
 const ImageValidator = require("../common/validator")
 
@@ -835,16 +836,16 @@ async function modificarSucursal(req,res){
 //IMAGENES SUCURSALES
 async function obtenerImagenSucursal(req,res){
     try{
-        const {id, main} = req.body
+        const {id, main, division} = req.body
 
         if(main === true){
-            await Imagenes_Sucursales.findAll({where:{main:true}}).then((rows)=>{
+            await Imagenes_Sucursales.findAll({where:{main:true, division:division}}).then((rows)=>{
                 res.status(200).send(rows)
             }).catch((err)=>{
                 res.status(500).json({message:err})
             })
         }else{
-            await Imagenes_Sucursales.findAll({where:{id_sucursal:id}}).then((rows)=>{
+            await Imagenes_Sucursales.findAll({where:{id_sucursal:id , division:division}}).then((rows)=>{
                 res.status(200).send(rows)
             }).catch((err)=>{
                 res.status(500).json({message:err})
@@ -931,7 +932,42 @@ async function eliminarComunicado(req,res){
     }catch(err){
         res.status(500).json({message: "error"})
     }
+}
 
+async function subirArchivo(req, res) {
+    const {origen} = req.body
+    const file = req.files[0];
+
+    try {
+        const exist = await Archivos.findOne({ where: { origen: origen } })
+        if (exist) {
+            console.log("modificar")
+            await Archivos.update({ nombre: file.originalname, file: file.buffer.toString('base64') }, { where: { origen: origen } }).then(() => {
+                res.status(200).json({ message: "ok" })
+            })
+        } else {
+            console.log("crear")
+            await Archivos.create({ nombre: file.originalname, file: file.buffer.toString('base64'), origen:origen}).then(()=>{
+                res.status(200).json({message:"ok"})
+            })
+        }
+    } catch (error) {
+        res.status(500).send('error: ' + error)
+    }
+}
+
+async function obtenerArchivo(req, res) {
+    const {origen} = req.params
+    try {
+        const exist = await Archivos.findOne({ where: { origen: origen } })
+        if (exist) {
+            res.status(200).send(exist)
+        } else {
+            res.status(200).send({message:"no existe"})
+        }
+    } catch (error) {
+        res.status(500).send('error: ' + error)
+    }
 }
 
 module.exports = {
@@ -992,8 +1028,9 @@ module.exports = {
     //COMUNICADOS
     obtenerComunicados,
     crearComunicado,
-    eliminarComunicado
-    
-
+    eliminarComunicado,
+    //ARCHUVOS GENERALES
+    subirArchivo,
+    obtenerArchivo
 }
 

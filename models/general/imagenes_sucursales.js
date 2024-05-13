@@ -27,6 +27,10 @@ const Imagenes_Sucursal = db.sequelize.define('Imagenes_Sucursales', {
     main:{
         type: DataTypes.BOOLEAN,
         allowNull: true,
+    },
+    division:{
+        type: DataTypes.TEXT,
+        allowNull: true,
     }
 }, {
     timestamps: false
