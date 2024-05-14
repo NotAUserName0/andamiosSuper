@@ -15,7 +15,7 @@ export class NavbarComponent {
   user:any
   iconoActual:string = "menu"
 
-  constructor(private router:Router, private tokenService:JwtService){
+  constructor(private router:Router, private tokenService:JwtService, private jwtService:JwtService) {
     this.user = tokenService.obtenerClaims()
   }
 
@@ -30,6 +30,7 @@ export class NavbarComponent {
       confirmButtonColor:"#B30000",
       confirmButtonText:"Salir"
     }).then(()=>{
+      this.jwtService.deleteToken()
       this.router.navigate(['/login'])
     })
   }
@@ -43,6 +44,6 @@ export class NavbarComponent {
     }
 
     document.getElementById("contenido").classList.toggle("show")
-  } 
+  }
 
 }
