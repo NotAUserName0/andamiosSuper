@@ -25,11 +25,13 @@ export class SucursalesAndamiosComponent {
   form:boolean = false;
   sucursal:Sucursal
   imagen:any
+  loading:boolean = false
 
   constructor(private fb: FormBuilder, private accionesService: ApiService, private activatedroute: ActivatedRoute) {
   }
 
   ngOnInit() {
+    this.loading = true
     this.activatedroute.params.subscribe(params => {
       this.division = params['division'];
       this.obtenerSucursales();
@@ -40,10 +42,12 @@ export class SucursalesAndamiosComponent {
     this.accionesService.obtenerSucursales(this.division).subscribe((data:Sucursal[]) => {
       this.sucursales = data;
         this.obtenerImagen();
+        this.loading = false
     })
   }
 
   deleteSucursal(element){
+    this.loading = true
     Swal.fire({
       title: '¿Estás seguro?',
       text: "¡No podrás revertir esto!",
@@ -56,6 +60,7 @@ export class SucursalesAndamiosComponent {
         this.accionesService.eliminarSucursal(element.id).subscribe(() => {
           this.accionesService.obtenerSucursales(this.division).subscribe((data:Sucursal[]) => {
             this.sucursales = data;
+            this.loading = false
           })
         })
         Swal.fire({
@@ -64,6 +69,8 @@ export class SucursalesAndamiosComponent {
           icon: 'success',
           timer: 2000,
           showConfirmButton: false
+        }).then(()=> {
+          this.obtenerSucursales();
         })
       }
     })
@@ -89,11 +96,13 @@ export class SucursalesAndamiosComponent {
     }
     this.accionesService.obtenerImagenSucursal(JSON.stringify(imagen)).subscribe((data:any) => {
       this.imagen = data[0];
+      this.loading = false
     })
 
   }
 
   agregarImagen(){
+    this.loading = true
     const input = document.createElement('input')
     input.type = 'file'
 
@@ -118,6 +127,8 @@ export class SucursalesAndamiosComponent {
           title: 'Error al agregar imagen',
           text: error,
           icon:'warning',
+        }).then(()=>{
+          this.loading = false
         })
       })
     }
@@ -126,6 +137,7 @@ export class SucursalesAndamiosComponent {
   }
 
   modificarImagen(){
+    this.loading = true
     const input = document.createElement('input')
     input.type = 'file'
 
@@ -150,6 +162,8 @@ export class SucursalesAndamiosComponent {
           title: 'Error al modificar imagen',
           text: error,
           icon:'warning',
+        }).then(()=>{
+          this.loading = false
         })
       })
     }

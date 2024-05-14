@@ -5,11 +5,12 @@ import Swal from 'sweetalert2';
 import { MatIcon } from '@angular/material/icon';
 import { error } from 'console';
 import { ActivatedRoute } from '@angular/router';
+import { LoadingComponent } from '../../../effects/loading/loading.component';
 
 @Component({
   selector: 'app-contacto',
   standalone: true,
-  imports: [MatIcon],
+  imports: [MatIcon, LoadingComponent],
   templateUrl: './contacto.component.html',
   styleUrl: './contacto.component.css'
 })
@@ -18,8 +19,10 @@ export class ContactoComponent {
   solicitud: SolicitudContacto
   show: boolean = false //false
   area:string = ""
+  loading:boolean = false
 
   constructor(private accionesService: ApiService, private activatedroute: ActivatedRoute) {
+    this.loading = true
     afterRender(()=>{
       this.activatedroute.params.subscribe(params => {
         this.area = params['area'];
@@ -48,6 +51,7 @@ export class ContactoComponent {
         solicitud.createdAt = formattedDate;
       });
       this.solicitudes = data;
+      this.loading = false
     },error => {
       console.log(error)
     });
@@ -55,6 +59,7 @@ export class ContactoComponent {
 
   showID(id: number) { //obtengo la soli especifica
     //alert(id)
+    this.loading = true
     this.accionesService.obtenerSolicitudContacto(id).subscribe(data => {
       const dates = {
         fechaA: data.createdAt,
@@ -79,6 +84,7 @@ export class ContactoComponent {
       this.solicitud = data
       console.log(this.solicitud)
       this.show = true
+      this.loading = false
     })
   }
 
@@ -119,7 +125,7 @@ export class ContactoComponent {
 
   eliminar(e, id) {
     e.stopPropagation()
-
+    this.loading = true
     Swal.fire({
       title: "¿Estas seguro de que quieres eliminar esta registro?",
       icon: "warning",
@@ -146,11 +152,14 @@ export class ContactoComponent {
             timer: 2000,
             text: err.error.mensaje,
             icon: "error"
+          }).then(() => {
+            this.loading = false
           })
         })
       }
     })
   }
+  
 
   goBack() {
     window.history.back();

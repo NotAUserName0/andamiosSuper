@@ -16,10 +16,11 @@ export const routes: Routes = [
     {path: 'inicio', component: InicioComponent},
     {path: 'proveedores', component: ProveedoresComponent},
     {path: 'clientes', component: ClientesComponent },
+    {path: 'usuarios', component: UsuariosComponent },
+    {path: 'perfil', component: PerfilComponent},
     {path: 'andamios', loadChildren: function() { return import('./rutas/andamios/andamios.routes').then(m => m.routes); }},
     {path: 'conten', loadChildren: function() { return import('./rutas/conten/conten.routes').then(m => m.routes); }},
-    {path: 'usuarios', component: UsuariosComponent },
-    {path: 'perfil', component: PerfilComponent}
+
   ], canActivate: [appGuard]}
 
 ];

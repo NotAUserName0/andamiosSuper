@@ -6,11 +6,12 @@ import { Carrusel } from '../../../models/andamios/carrusel';
 import { MatIcon } from '@angular/material/icon';
 import { fadeInAnimation } from '../../../effects/fadeIn';
 import { trigger, state, style, transition, animate } from '@angular/animations';
+import { LoadingComponent } from '../../../effects/loading/loading.component';
 
 @Component({
   selector: 'app-carrusel-andamios',
   standalone: true,
-  imports: [MatIcon, FormsModule, ReactiveFormsModule],
+  imports: [MatIcon, FormsModule, ReactiveFormsModule, LoadingComponent],
   templateUrl: './carrusel-andamios.component.html',
   styleUrl: './carrusel-andamios.component.css',
   animations: [fadeInAnimation,
@@ -32,9 +33,11 @@ export class CarruselAndamiosComponent {
   imagenResponsive: File;
   idEditado: number;
   datoEditado: string;
+  loading:boolean = false
 
   constructor(private accionesService: ApiAndamiosService
     , private fb: FormBuilder) {
+      this.loading = true
     this.formulario = this.fb.group({
       imagen1: new FormControl([''], Validators.required),
       imagen2: new FormControl([''], Validators.required)
@@ -47,7 +50,7 @@ export class CarruselAndamiosComponent {
   }
 
   delete(id: number) {
-
+    this.loading = true
     Swal.fire({
       title: "¿Estas seguro de que quieres eliminar esta imagen?",
       icon: "warning",
@@ -66,6 +69,7 @@ export class CarruselAndamiosComponent {
             showConfirmButton: false
           }).then(() => {
             this.show()
+            this.loading = false
           })
         }, error => {
           Swal.fire({
@@ -73,6 +77,8 @@ export class CarruselAndamiosComponent {
             confirmButtonColor: "#B30000",
             timer: 2000,
             icon: "error"
+          }).then(() => {
+            this.loading = false
           })
         })
       }
@@ -82,6 +88,7 @@ export class CarruselAndamiosComponent {
   show() {
     this.accionesService.obtenerCarrusel().subscribe(res => {
       this.carrusel = res
+      this.loading = false
     })
   }
 
@@ -95,7 +102,7 @@ export class CarruselAndamiosComponent {
 
 
   subir() {
-
+    this.loading = true
     if (this.editar) {
 
       if (this.formulario.valid) {
@@ -117,6 +124,7 @@ export class CarruselAndamiosComponent {
             this.estado = 'void';
             this.idEditado = null;
             this.show()
+            this.loading = false
           })
         },err=>{
           Swal.fire({
@@ -124,6 +132,8 @@ export class CarruselAndamiosComponent {
             confirmButtonColor: "#B30000",
             timer: 2000,
             icon: "error"
+          }).then(() => {
+            this.loading = false
           })
 
         });
@@ -132,6 +142,8 @@ export class CarruselAndamiosComponent {
         Swal.fire({
           title: "No se selecciono ninguna imagen",
           confirmButtonColor: "#B30000"
+        }).then(() => {
+          this.loading = false
         })
       }
 
@@ -153,6 +165,7 @@ export class CarruselAndamiosComponent {
           }).then(() => {
             this.show()
             this.close()
+            this.loading = false
           })
         }, error => {
           Swal.fire({
@@ -160,6 +173,8 @@ export class CarruselAndamiosComponent {
             confirmButtonColor: "#B30000",
             timer: 2000,
             icon: "error"
+          }).then(() => {
+            this.loading = false
           })
         })
 
@@ -168,6 +183,8 @@ export class CarruselAndamiosComponent {
         Swal.fire({
           title: "No se selecciono ninguna imagen",
           confirmButtonColor: "#B30000"
+        }).then(() => {
+          this.loading = false
         })
       }
     }

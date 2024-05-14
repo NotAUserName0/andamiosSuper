@@ -5,11 +5,12 @@ import { ApiService } from '../../services/api.service';
 import { MatIconModule } from '@angular/material/icon';
 import { Comunicado } from '../../models/comunicado';
 import { Archivo } from '../../models/archivo';
+import { LoadingComponent } from '../../effects/loading/loading.component';
 
 @Component({
   selector: 'app-proveedores',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatIconModule],
+  imports: [FormsModule, ReactiveFormsModule, MatIconModule, LoadingComponent],
   templateUrl: './proveedores.component.html',
   styleUrl: './proveedores.component.css'
 })
@@ -20,8 +21,10 @@ export class ProveedoresComponent {
   comunicado:FormGroup
   comunicados:Comunicado[] = []
   pdf:Archivo
+  loading:boolean = false
 
   constructor(private accionesService:ApiService , private fb:FormBuilder) {
+    this.loading = true
     this.comunicado = this.fb.group({
       titulo:['',Validators.required],
       comunicado:['',Validators.required],
@@ -52,6 +55,7 @@ export class ProveedoresComponent {
       });
       this.comunicados = data
       this.obtenerPDF('proveedores')
+      this.loading = false
     })
   }
 
@@ -62,6 +66,7 @@ export class ProveedoresComponent {
   }
 
   eliminarComunicado(id:number){
+    this.loading = true
     this.accionesService.eliminarComunicado(id).subscribe((data)=>{
       Swal.fire({
         title: 'Comunicado eliminado',
@@ -75,6 +80,7 @@ export class ProveedoresComponent {
   }
 
   subir() {
+    this.loading = true
     if (this.accion == "pdf") { //PDF
       const formData = new FormData();
 
@@ -91,6 +97,7 @@ export class ProveedoresComponent {
           this.file = null
           //this.accion = ""
           this.obtenerPDF('proveedores')
+          this.loading = false
         })
       },err=>{
         console.log(err)
@@ -99,6 +106,8 @@ export class ProveedoresComponent {
           text: JSON.stringify(err),
           icon: 'info',
           confirmButtonText: 'Aceptar'
+        }).then(()=>{
+          this.loading = false
         })
       })
 
@@ -124,6 +133,8 @@ export class ProveedoresComponent {
           text: 'Faltan campos por llenar',
           icon: 'info',
           confirmButtonText: 'Aceptar'
+        }).then(()=>{
+          this.loading = false
         })
       }
     } else {
@@ -133,6 +144,8 @@ export class ProveedoresComponent {
         text: 'Necesitas seleccionar una opcion',
         icon: 'error',
         confirmButtonText: 'Aceptar'
+      }).then(()=>{
+        this.loading = false
       })
     }
   }

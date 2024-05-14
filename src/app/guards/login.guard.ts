@@ -9,7 +9,7 @@ export const loginGuard: CanActivateFn = (route, state) => {
     const cookie = inject(CookieService);
 
     if (cookie.check('token')) {
-      router.navigate(['/inicio']);
+      router.navigateByUrl('/inicio');
       return false;
     } else {
       return true;

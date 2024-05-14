@@ -4,11 +4,12 @@ import Swal from 'sweetalert2';
 import { Anuncio } from '../../../models/andamios/anuncio';
 import { ApiAndamiosService } from '../service/api-andamios.service';
 import { MatIconModule } from '@angular/material/icon';
+import { LoadingComponent } from '../../../effects/loading/loading.component';
 
 @Component({
   selector: 'app-anuncio',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatIconModule],
+  imports: [FormsModule, ReactiveFormsModule, MatIconModule, LoadingComponent],
   templateUrl: './anuncio.component.html',
   styleUrl: './anuncio.component.css'
 })
@@ -16,8 +17,10 @@ export class AnuncioComponent {
   isChecked: boolean = false
   form: FormGroup
   anuncio: Anuncio
+  loading:boolean = false
 
   constructor(private fb: FormBuilder, private accionesService: ApiAndamiosService) {
+    this.loading = true
     this.form = fb.group({
       id: [''],
       text: ['', Validators.required],
@@ -42,11 +45,12 @@ export class AnuncioComponent {
   show() {
     this.accionesService.obtenerAnuncio().subscribe(res => {
       this.anuncio = res
+      this.loading = false
     })
   }
 
   update() {
-
+    this.loading = true
     Swal.fire({
       title: '¿Estas seguro?',
       text: '¿Deseas actualizar el anuncio?',
@@ -70,6 +74,7 @@ export class AnuncioComponent {
                   this.isChecked = false
                   this.form.reset()
                   this.form.get('url').setValue('/')
+                  this.loading = false
                 })
               }, error => {
                 Swal.fire({
@@ -77,6 +82,8 @@ export class AnuncioComponent {
                   text: error.error.error,
                   confirmButtonColor: '#B30000',
                   icon: 'error',
+                }).then(() => {
+                  this.loading = false
                 })
               })
           }else{
@@ -91,6 +98,7 @@ export class AnuncioComponent {
                   this.isChecked = false
                   this.form.reset()
                   this.form.get('url').setValue('/')
+                  this.loading = false
                 })
               }, error => {
                 Swal.fire({
@@ -98,6 +106,8 @@ export class AnuncioComponent {
                   text: error.error.error,
                   confirmButtonColor: '#B30000',
                   icon: 'error',
+                }).then(() => {
+                  this.loading = false
                 })
               })
           }
@@ -106,6 +116,8 @@ export class AnuncioComponent {
             title: 'Completa el formulario',
             confirmButtonColor: '#B30000',
             icon: 'error',
+          }).then(() => {
+            this.loading = false
           })
         }
       }

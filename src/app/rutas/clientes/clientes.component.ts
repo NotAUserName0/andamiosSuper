@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import Swal from 'sweetalert2';
 import { ApiService } from '../../services/api.service';
 import { Archivo } from '../../models/archivo';
+import { LoadingComponent } from '../../effects/loading/loading.component';
 
 @Component({
   selector: 'app-clientes',
   standalone: true,
-  imports: [],
+  imports: [LoadingComponent],
   templateUrl: './clientes.component.html',
   styleUrl: './clientes.component.css'
 })
@@ -14,6 +15,7 @@ export class ClientesComponent {
 
   file:File
   archivo:Archivo
+  loading:boolean = false
 
   constructor(private accionesService:ApiService){
     this.obtenerArchivo()
@@ -26,10 +28,12 @@ export class ClientesComponent {
   obtenerArchivo(){
     this.accionesService.obtenerArchivo('clientes').subscribe((data:Archivo) => {
       this.archivo = data
+      this.loading = false
     })
   }
 
   subir() {
+    this.loading = true
     if (this.file) {
       const formData = new FormData();
 
@@ -45,6 +49,7 @@ export class ClientesComponent {
         }).then(() => {
           this.file = null
           window.location.reload()
+          this.loading = false
         })
       }, err => {
         Swal.fire({
@@ -52,6 +57,8 @@ export class ClientesComponent {
           text: err,
           icon: 'info',
           confirmButtonText: 'Aceptar'
+        }).then(() => {
+          this.loading = false
         })
       })
 
@@ -61,6 +68,8 @@ export class ClientesComponent {
         text: 'Necesitas seleccionar una opcion',
         icon: 'error',
         confirmButtonText: 'Aceptar'
+      }).then(() => {
+        this.loading = false
       })
     }
   }

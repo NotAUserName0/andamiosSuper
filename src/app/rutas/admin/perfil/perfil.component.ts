@@ -7,11 +7,12 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import Swal from 'sweetalert2';
 import { MatIcon } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
+import { LoadingComponent } from '../../../effects/loading/loading.component';
 
 @Component({
   selector: 'app-perfil',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatIcon],
+  imports: [FormsModule, ReactiveFormsModule, MatIcon, LoadingComponent],
   templateUrl: './perfil.component.html',
   styleUrl: './perfil.component.css'
 })
@@ -20,6 +21,7 @@ export class PerfilComponent {
   user:Usuario
   claims:any
   formulario: FormGroup
+  loading:boolean = false
 
   constructor(private activatedroute:ActivatedRoute, private adminService:AdminService, private token:JwtService,
     private fb:FormBuilder, private router:Router) {
@@ -40,6 +42,8 @@ export class PerfilComponent {
 
    actualizar() {
 
+    this.loading = true
+
     let user = {
       id: this.user.id,
       user: this.formulario.value.user,
@@ -57,6 +61,7 @@ export class PerfilComponent {
       }).then(()=>{
         this.token.deleteToken()
         this.router.navigate(['/login'])
+        this.loading = false
       })
     },err=>{
       Swal.fire({
@@ -64,11 +69,14 @@ export class PerfilComponent {
         confirmButtonColor: "#3085d6",
         text:err.error.message,
         icon: "error"
+      }).then (()=>{
+        this.loading = false
       })
     })
   }
 
   eliminar(){
+    this.loading = true
     Swal.fire({
       title: '¿Estas seguro de eliminar tu cuenta?',
       text: "No podras recuperarla",
@@ -89,6 +97,7 @@ export class PerfilComponent {
           }).then(()=>{
             this.token.deleteToken()
           this.router.navigate(['/login'])
+          this.loading = false
           })
         },err=>{
           Swal.fire({
@@ -96,6 +105,8 @@ export class PerfilComponent {
             confirmButtonColor: "#3085d6",
             text:err.error.message,
             icon: "error"
+          }).then (()=>{
+            this.loading = false
           })
         })
       }

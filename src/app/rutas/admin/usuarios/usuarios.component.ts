@@ -5,11 +5,12 @@ import { JwtService } from '../../../services/jwt.service';
 import { Usuario } from '../../../models/admin/usuario';
 import Swal from 'sweetalert2';
 import { MatIcon } from '@angular/material/icon';
+import { LoadingComponent } from '../../../effects/loading/loading.component';
 
 @Component({
   selector: 'app-usuarios',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, MatIcon],
+  imports: [FormsModule, ReactiveFormsModule, MatIcon, LoadingComponent],
   templateUrl: './usuarios.component.html',
   styleUrl: './usuarios.component.css'
 })
@@ -25,6 +26,7 @@ export class UsuariosComponent {
 
   constructor(private userService:AdminService, private fb:FormBuilder,
     private tokenService:JwtService) {
+      this.loading = true
       this.formulario = this.fb.group({
         user: ['', Validators.required],
         email: ['', [Validators.email, Validators.required]],
@@ -38,6 +40,7 @@ export class UsuariosComponent {
       this.userService.obtenerUsuarios().subscribe(res => {
         const filterUsers = res.filter(user => user.id !== this.tokenClaims.id)
         this.users = filterUsers
+        this.loading = false
       })
     }
 

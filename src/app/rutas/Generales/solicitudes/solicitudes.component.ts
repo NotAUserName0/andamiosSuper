@@ -4,11 +4,12 @@ import { ApiService } from '../../../services/api.service';
 import Swal from 'sweetalert2';
 import { Solicitud } from '../../../models/general/solicitud';
 import { MatIcon } from '@angular/material/icon';
+import { LoadingComponent } from '../../../effects/loading/loading.component';
 
 @Component({
   selector: 'app-solicitudes',
   standalone: true,
-  imports: [MatIcon],
+  imports: [MatIcon, LoadingComponent],
   templateUrl: './solicitudes.component.html',
   styleUrl: './solicitudes.component.css'
 })
@@ -18,8 +19,10 @@ export class SolicitudesComponent {
   solicitudes:Solicitud[]
   controlSort:boolean = true
   icon:string = "north"
+  loading:boolean = false
 
   constructor(private accionesService: ApiService, private activatedroute: ActivatedRoute) {
+    this.loading = true
     afterRender(()=>{
       this.activatedroute.params.subscribe(params => {
         this.division = params['division'];
@@ -31,6 +34,7 @@ export class SolicitudesComponent {
    obtenerLista(){
     this.accionesService.obtenerSolicitudes(this.division).subscribe(res=>{
       this.solicitudes = res
+      this.loading = false
     },error=>{
       console.log(error)
     })
@@ -81,7 +85,7 @@ export class SolicitudesComponent {
   }
 
   borrar(id:number){
-
+    this.loading = true
     Swal.fire({
       title: '¿Estás seguro?',
       text: "No podrás revertir esto!",
@@ -101,6 +105,7 @@ export class SolicitudesComponent {
             confirmButtonColor:"#B30000"
           }).then(()=>{
             this.obtenerLista()
+
           })
         }, (error)=>{
           Swal.fire({
@@ -109,6 +114,8 @@ export class SolicitudesComponent {
             title:"Error al eliminar",
             confirmButtonColor:"#B30000",
             text: error.error
+          }).then(()=>{
+            this.loading = false
           })
         })
       }
