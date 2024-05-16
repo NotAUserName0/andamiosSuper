@@ -28,7 +28,9 @@ export const appGuard: CanActivateFn = (route, state) => {
   const router = inject(Router)
 
   if(!cookie.check('token')){
-    router.navigateByUrl('/login')
+    setTimeout(() => {
+      router.navigateByUrl('/login')
+    }, 500)
     return false
   } else{
     return true;
