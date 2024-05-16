@@ -19,7 +19,7 @@ db.checkDatabaseConnection().then(() => {
     app.use('/general', general);
     app.use('/andamios', andamios);
     app.use('/admin', admin);
-    //app.use('/api', api);
+    app.use('/api', api);
 
 
     /* INICIA EL SERVIDOR CON HTTP POR EL SOCKET*/
