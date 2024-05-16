@@ -1,0 +1,72 @@
+<nav>
+  <span>
+    <img src="assets/Logo_Andamios-Atlas.png" alt="">
+
+    <mat-icon (click)="mostrarMenu()">{{iconoActual}}</mat-icon>
+  </span>
+
+  <div class="menu" id="menu">
+
+    <div class="opcion">
+      <a routerLink="/" (click)="mostrarMenu()" routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+    </div>
+
+    <div class="opcion">
+      <a title="andamios-atlas" routerLink="/quienes-somos" routerLinkActive="active" (click)="mostrarMenu()">¿Quienes
+        somos?</a>
+    </div>
+
+    @if(responsive){
+      <div class="opcion">
+        <div class="impostor" (click)="openProb()">Proveedores</div>
+      </div>
+    } @else {
+      <div class="opcion">
+        <a title="proveedores-andamios-atlas" routerLink="/proveedores/alta" routerLinkActive="active"
+          (click)="mostrarMenu()">Proveedores</a>
+        <div class="submenu">
+          <div class="controlador">
+            <a title="efactura-atlas" routerLink="/proveedores/efactura" (click)="mostrarMenu()">E-Factura</a>
+            <a title="comunicados-atlas" routerLink="/proveedores/comunicados" (click)="mostrarMenu()">Comunicados</a>
+            <a title="aviso-atlas" routerLink="/proveedores/aviso" (click)="mostrarMenu()">Aviso de privacidad para
+              proveedores</a>
+          </div>
+        </div>
+      </div>
+    }
+
+    @if(rOpen){
+    <div class="res">
+      <div class="opcion">
+        <a title="proveedores-atlas" routerLink="/proveedores/alta" routerLinkActive="active"
+          (click)="mostrarMenu()">Alta Proveedores</a>
+      </div>
+      <div class="opcion">
+        <a title="efactura-atlas" routerLink="/proveedores/efactura" routerLinkActive="active" (click)="mostrarMenu()">
+          E-Factura</a>
+      </div>
+      <div class="opcion">
+        <a title="comunicados-atlas" routerLink="/proveedores/comunicados" routerLinkActive="active"
+          (click)="mostrarMenu()"> Comunicados</a>
+      </div>
+      <div class="opcion">
+        <a title="avisos-atlas" routerLink="/proveedores/aviso" routerLinkActive="active" (click)="mostrarMenu()"> Aviso
+          de privacidad para proveedores</a>
+      </div>
+    </div>
+    }
+
+
+    <div class="opcion">
+      <a title="clientes-atlas" routerLink="/clientes" routerLinkActive="active" (click)="mostrarMenu()">Clientes</a>
+    </div>
+    <div class="opcion">
+      <a title="andamios-atlas" routerLink="/atlas" routerLinkActive="active" (click)="mostrarMenu()">Andamios</a>
+    </div>
+    <div class="opcion">
+      <a title="conten-atlas" routerLink="/conten" routerLinkActive="active" (click)="mostrarMenu()">Conten</a>
+    </div>
+
+  </div>
+</nav>

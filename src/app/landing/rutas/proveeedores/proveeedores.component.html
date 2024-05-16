@@ -1,0 +1,167 @@
+@if(accion === 'alta' || accion === 'efactura'){
+<div class="contenedor" [@fadeIn]>
+  <div class="title">Proveedores</div>
+
+  <section class="disclaimer">
+    Estimado Proveedor ponemos a su disposición nuestro aviso de privacidad de datos en la página <a class="link"
+      href="/privacidad">www.andamiosatlas.com</a>
+    y asimismo acepta que la carga, captura y registro de datos que se solicitan en este apartado es con el
+    consentimiento y autorización expresa de su parte, así mismo se hace sabedor de nuestro Aviso de Privacidad
+    Proveedor.
+  </section>
+
+  @if(accion === 'alta'){
+  <section class="botones">
+    <div class="title" id="seccion"> ALTA E INTEGRACIÓN DE EXPEDIENTES</div>
+    <div class="conjunto">
+      <a href="https://www.e-expedientes.com/Portal/Expedientes/Create?HeaderId=4D7A41774D5464664D7A41774D5456664E5441344E54493D"
+        class="btn btn-outline-danger">Persona Fisica</a>
+      <a href="https://www.e-expedientes.com/Portal/Expedientes/Create?HeaderId=4D7A41774D5464664D7A41774D5456664E5441344E544D3D"
+        class="btn btn-outline-danger">Persona Moral</a>
+      <a href="https://www.e-expedientes.com/Portal/Expedientes/Create?HeaderId=4D7A41774D5464664D7A41774D5456664E5441344E54513D"
+        class="btn btn-outline-danger">Extranjero</a>
+    </div>
+  </section>
+  }
+
+  @if(accion === 'efactura'){
+
+  <section class="botones">
+    <div class="title" id="seccion">REVISIÓN DE FACTURAS</div>
+    <div class="conjunto">
+      <a href="https://andamiosatlas.e-facturabuzon.com/" class="btn btn-outline-danger">Proveedores</a>
+      <a href="https://andamiosatlas.e-facturabuzon.com/AND/Admin/Acceso_Sitio/Login.aspx"
+        class="btn btn-outline-danger">Administracion</a>
+    </div>
+  </section>
+  }
+
+  <section class="help">
+    <div class="title" id="seccion">GUÍA RÁPIDA PARA PORTAL</div>
+    <ngx-extended-pdf-viewer [src]="archivo" [height]="'100px'" [textLayer]="true" [showHandToolButton]="true">
+    </ngx-extended-pdf-viewer>
+    <h4>¿Quedaste con dudas? Contactanos!</h4>
+    <a href="/atlas/contacto" class="btn btn-outline-danger" id="contacto">Contactanos</a>
+  </section>
+</div>
+}
+
+@if(accion === 'comunicados'){
+<div class="contenedor" [@fadeIn]>
+  <div class="title">Comunicados</div>
+  @for (comunicado of comunicados.reverse(); track comunicado) {
+  <div>
+    <div class="comunicado">
+      <div class="titulo">{{comunicado.titulo}}</div>
+      <div class="fecha">{{comunicado.createdAt}}</div>
+      <div class="descripcion">{{comunicado.comunicado}}</div>
+      <a href="" class="btn btn-outline-danger" id="btn-com">Ir al contenido</a>
+    </div>
+  </div>
+  }
+</div>
+}
+
+@if(accion === 'aviso'){
+<div class="contenedor" [@fadeIn]>
+  <div class="title">Aviso</div>
+
+  <div class="texto">
+    Apreciable Proveedor
+    <br>
+    Para los efectos de este aviso se entenderá por:
+    <br><br>
+    <li>a) Ley de datos a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDP).</li>
+    <li>b) Responsable del manejo de datos al Departamento Compras.</li>
+    <br>
+    En cumplimiento a lo dispuesto por la Ley Federal de Protección de Datos Personales en Posesión de los
+    Particulares (LFPDP), Andamios Atlas, S.A. de C.V., hace de su conocimiento que:
+    <br><br>
+    <li>1.- Con respecto a La Identidad y Domicilio del Responsable del tratamiento de sus datos personales.</li>
+    <br>
+    ANDAMIOS ATLAS, S.A. DE C.V., Establece como responsable del tratamiento de datos personales al departamento de
+    Compras, con domicilio en la Calle de Rio Lerma No. 5, Fraccionamiento Industrial San Nicolas Tlaxcolpan,
+    Tlalnepantla de Baz, Estado de México, C.P. 54030 Teléfono.- 5093-5600 ext.-5695, correo electrónico
+    compras&#64;andamiosatlas.com.
+    <br><br>
+    <li>2.- Andamios Atlas, S.A. de C.V. Puede recabar sus datos de manera personal o a través de diferentes fuentes, ya
+      sea directa o indirectamente. Conforme a las políticas internas los datos personales, así como los datos
+      personales sensibles que proporcione con motivo de la Contratación de servicios y/o venta de insumos, se
+      utilizaran para: </li>
+    <br><br>
+    <ul>
+      <li>2.1.-Crear su registro de Proveedor, </li>
+
+      <li>2.2- Complementar los Contratos y documentación soporte de las operaciones comerciales, </li>
+
+      <li>2.3.-Actualizar los registros de Proveedores, </li>
+
+      <li>2.4.-Solicitar y proporcionar referencias comerciales, </li>
+
+      <li>2.5.-Solicitar y proporcionar referencias ante Instituciones Financieras, </li>
+
+      <li>2.6.- Mantener su información actualizada. </li>
+    </ul>
+    <br>
+    3.-Medios para ejercer los derechos de acceso, rectificación, cancelación, oposición, limitación de uso, y
+    divulgación o revocación del consentimiento.
+    <br><br>
+    Sus datos serán protegidos con las medidas de seguridad y confidencialidad aplicables de conformidad con la
+    regulación vigente y atendiendo las políticas internas que al efecto el departamento de Compras de Andamios Atlas,
+    S.A. de C.V., tenga establecidas.
+    <br><br>
+    El ejercicio de los derechos de acceso, rectificación, cancelación, oposición, divulgación y limitación de uso o
+    revocación del consentimiento, podrán llevarse a cabo a partir del 6 de Enero del 2012, mediante solicitud por
+    escrito presentada al departamento de Compras la cual debe contener:
+    <br><br>
+    <ul>
+      <li>3.1.- Nombre completo del titular de los datos personales y/o quien le represente legalmente, teléfono, correo
+        electrónico y domicilio para comunicar la respuesta a la solicitud. </li>
+
+      <li>3.2.- Identificación Oficial y en su caso los documentos que acrediten la Representación Legal del titular.
+      </li>
+
+      <li>3.3- La descripción clara y precisa de los datos personales respecto de los que se busca ejercer alguno de los
+        derechos antes mencionados. </li>
+
+      <li>3.4.-Cualquier otro elemento o documento que facilite la localización de los datos personales. </li>
+
+      <li>3.5.- Tratándose de solicitudes de rectificación, el titular y/o quien lo represente legalmente deberá indicar
+        las
+        modificaciones a realizarse y aportar la documentación que sustente su petición. </li>
+    </ul>
+
+    <br>
+    Andamios Atlas, S.A. de C.V., se reserva su derecho de solicitar información y/o documentación adicional a la
+    mencionada con antelación, para atender la solicitud, misma que será contestada dentro de los plazos que la propia
+    Ley de Datos señala.
+    <br><br>
+    <li>4.-Transferencia de datos personales que en su caso se efectúen: </li>
+    <br><br>
+    El Responsable podrá transferir datos a terceros nacionales o extranjeros a fin de cumplir obligaciones derivadas
+    de relaciones contractuales, entre otros.
+    <br><br>
+    Si Usted no manifiesta al Responsable su oposición por escrito en la forma y términos mencionados en el presente
+    aviso para la transferencia de sus datos personales, se entenderá otorgado su consentimiento y/o el de su
+    representada.
+    <br><br>
+    Así mismo el responsable podrá llevar a cabo transferencia de sus datos sin requerir su consentimiento en los
+    supuestos indicados en el artículo 37 de la Ley de Datos.
+    <br><br>
+    <li>5.-Cambios al Aviso de Privacidad </li>
+    <br><br>
+    Andamios Atlas, S.A. de C.V., se reserva del derecho de efectuar en cualquier momento modificaciones y/o
+    actualizaciones al presente aviso de privacidad.
+    <br><br>
+    El aviso y en su caso las modificaciones estarán disponibles a través de cualquiera de los siguientes medios:
+    <br><br>
+    Anuncios visibles en las sucursales,
+    En nuestra página de internet <a class="aviso-msg" href="andamiosatlas.com">andamiosatlas.com</a>.
+
+    <br><br>
+    Atentamente:
+
+    Andamios Atlas, S.A. de C.V.
+  </div>
+</div>
+}
