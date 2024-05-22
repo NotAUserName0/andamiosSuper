@@ -33,7 +33,7 @@ const Solicitudes = db.sequelize.define('Solicitudes', {
       allowNull: false,
     },
     file: {
-      type: DataTypes.STRING, // Puedes ajustar según tu necesidad, también puedes usar DataTypes.BLOB para almacenar el contenido directamente
+      type: DataTypes.TEXT('long'), // Puedes ajustar según tu necesidad, también puedes usar DataTypes.BLOB para almacenar el contenido directamente
       allowNull: false,
     },
     division: {
