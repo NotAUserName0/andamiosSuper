@@ -1,0 +1,46 @@
+ul{
+  list-style: none;
+}
+
+ol > li::marker{
+  font-weight: 400;
+}
+
+li{
+  margin-bottom: 15px;
+}
+
+ol{
+  margin-bottom: 5px;
+}
+
+strong{
+  margin-bottom: 15px;
+}
+
+.contenedor{
+  font-weight: 300;
+  padding: 0 10%;
+  margin-top: 100px;
+  margin-bottom: 30px;
+}
+
+.title {
+  width: fit-content;
+  font-weight: 500;
+  font-size: 40px;
+  color: black;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--color-primario);
+}
+
+@media only screen and (min-width: 200px) and (max-width: 749px){
+  .title{
+    font-size: 30px;
+    text-align: center;
+  }
+
+  .contenedor{
+    text-align: justify;
+  }
+}

@@ -4,6 +4,7 @@
 :root{
   --color-primario: #cf142b;
   --color-secundario: #1a52a9;
+  --color-primario-minimum: #c35461;
 }
 
 *{

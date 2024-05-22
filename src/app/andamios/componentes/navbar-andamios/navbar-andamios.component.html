@@ -1,0 +1,82 @@
+<nav>
+
+  <div class="responsive">
+    <img src="assets/atlas_icon.png" alt="" id="logo">
+    <mat-icon (click)="toggleIcon()">{{icon}}</mat-icon>
+  </div>
+
+  <div class="nav" id="nav">
+    <img src="assets/Logo_Andamios-Atlas.png" alt="" class="item-categoria" id="logo">
+
+    <div class="item-categoria">
+      <a href="/andamios" routerLink="/andamios" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+    </div>
+
+    @for (categoria of navbar; track categoria) {
+    <div class="item-categoria">
+      <a href="/andamios/categoria/{{categoria.url}}" routerLink="/andamios/categoria/{{categoria.url}}">{{
+        categoria.titulo }}</a>
+      <div class="secciones">
+        @for (seccion of categoria.secciones; track seccion) {
+        <div class="item-seccion">
+          <a href="/andamios/seccion/{{seccion.url}}"
+            routerLink="/andamios/seccion/{{seccion.url}}">{{seccion.titulo}}</a>
+          <div class="subsecciones">
+            @for (subseccion of seccion.subsecciones; track subseccion) {
+            <a class="item-subseccion" href="/andamios/subseccion/{{subseccion.url}}">{{subseccion.nombre}}</a>
+            }
+          </div>
+        </div>
+        }
+      </div>
+    </div>
+    }
+
+    <div class="item-categoria">
+      <a href="/andamios/renta">Proveedores</a>
+    </div>
+
+    <div class="item-categoria">
+      <a href="/andamios/renta">Clientes</a>
+    </div>
+
+    <div class="item-categoria">
+      <a href="/andamios/quienes-somos">Sucursales</a>
+    </div>
+
+    <div class="item-categoria">
+      <a href="/andamios/contacto">Contacto</a>
+    </div>
+  </div>
+
+  <div class="responsive-menu" id="responsive-menu">
+    <div class="item-categoria">
+      <a href="/andamios" routerLink="/andamios" routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }">Inicio</a>
+    </div>
+
+    @for (categoria of navbar; track categoria) {
+    <div class="item-categoria">
+      <a href="/andamios/categoria/{{categoria.url}}" routerLink="/andamios/categoria/{{categoria.url}}">{{
+        categoria.titulo }}</a>
+    </div>
+    }
+
+    <div class="item-categoria">
+      <a href="/andamios/renta">Proveedores</a>
+    </div>
+
+    <div class="item-categoria">
+      <a href="/andamios/renta">Clientes</a>
+    </div>
+
+    <div class="item-categoria">
+      <a href="/andamios/quienes-somos">Sucursales</a>
+    </div>
+
+    <div class="item-categoria">
+      <a href="/andamios/contacto">Contacto</a>
+    </div>
+  </div>
+</nav>

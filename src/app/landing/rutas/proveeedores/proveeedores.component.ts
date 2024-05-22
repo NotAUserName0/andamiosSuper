@@ -4,13 +4,14 @@ import { Comunicado } from '../../models/comunicado';
 import { Archivo } from '../../models/archivo';
 import { PetitionsService } from '../../../petitions.service';
 import { ActivatedRoute } from '@angular/router';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
 import { fadeInAnimation } from '../../../fadeIn';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { SeoService } from '../../../seo.service';
 
 @Component({
   selector: 'app-proveeedores',
   standalone: true,
-  imports: [NgxExtendedPdfViewerModule],
+  imports: [],
   templateUrl: './proveeedores.component.html',
   styleUrl: './proveeedores.component.css',
   animations: [fadeInAnimation]
@@ -24,32 +25,40 @@ export class ProveeedoresComponent {
   loading: boolean = false
 
   constructor(private landingService: LandingService,
-    private helpers: PetitionsService, private activatedRoute: ActivatedRoute) {
+    private helpers: PetitionsService, private activatedRoute: ActivatedRoute,
+  private seo:SeoService) {
+
+
     afterRender(() => {
       window.scroll(0, 0);
     })
     this.loading = true;
     this.activatedRoute.paramMap.subscribe(params => {
       this.accion = params.get('seccion');
-
-      afterRender(() => {
-        window.scroll(0, 0);
-      })
+      this.seo.actualizarTitulo("Proveedores | "+ this.accion.toUpperCase());
       if (this.accion === 'alta' || this.accion === 'efactura') {
         this.obtenerArchivo();
+        this.seo.generateTags({
+          title: "Proveedores | " + this.accion,
+          description: "Andamios Atlas pone disposición de sus proveedores los formatos necesarios para realizar trámites y gestiones con la empresa.",
+          slug: "proveedores/" + this.accion
+        })
       } else if (this.accion === 'comunicados') {
         this.obtenerComunicados();
+        this.seo.generateTags({
+          title: "Proveedores | Comunicados",
+          description: "Andamios Atlas pone disposición de sus proveedores los comunicados más recientes para mantenerlos informados de los cambios y noticias de la empresa.",
+          slug: "proveedores/comunicados"
+        })
       }
       this.loading = false;
     })
   }
 
-
   obtenerArchivo() {
     this.landingService.obtenerArchivo('proveedores').subscribe((res: any) => {
-      //this.archivo = this.helpers.sanitizarPdf(res.file);
-      //this.archivoB64 = this.base64toPDF(res.file);
-      this.archivo = this.base64toPDF(res.file);
+      this.archivo = this.helpers.sanitizarPdf(res.file);
+      this.archivoB64 = res.file;
       this.loading = false;
     });
   }
@@ -96,19 +105,5 @@ export class ProveeedoresComponent {
 
     // Liberar el objeto URL
     URL.revokeObjectURL(url);
-  }
-
-  base64toPDF(base64Content: string): string {
-    const byteCharacters = atob(base64Content);
-    const byteNumbers = new Array(byteCharacters.length);
-
-    for (let i = 0; i < byteCharacters.length; i++) {
-      byteNumbers[i] = byteCharacters.charCodeAt(i);
-    }
-
-    const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/pdf' });
-
-    return URL.createObjectURL(blob);
   }
 }

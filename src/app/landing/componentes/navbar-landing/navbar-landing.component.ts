@@ -14,7 +14,7 @@ export class NavbarLandingComponent {
 
   navbar:boolean = false
   iconoActual: string = 'menu';
-  responsive = false
+  responsive:boolean
   private resizeSubscription: any;
   rOpen:boolean = false
 
@@ -34,6 +34,10 @@ export class NavbarLandingComponent {
         }
       });
     })
+  }
+
+  ngAfterViewInit(){
+    this.responsive = false
   }
 
   mostrarMenu(){

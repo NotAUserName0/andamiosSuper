@@ -14,7 +14,7 @@ export class FooterLandingComponent {
   constructor(private router:Router){}
 
   goToForm(){
-    this.router.navigate(['aplicaciones'])
+    this.router.navigate(['unete-al-equipo'])
   }
 
 }

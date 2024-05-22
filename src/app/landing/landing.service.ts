@@ -21,6 +21,8 @@ export class LandingService {
     return this.http.get<Comunicado[]>(`${this.URL}obtenerComunicados`)
   }
 
+  enviarFormulario(formData:FormData){
+    return this.http.post(`${this.URL}crearSolicitud`, formData)
+  }
 
-  
 }

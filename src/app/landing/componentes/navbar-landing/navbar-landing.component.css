@@ -143,6 +143,10 @@ mat-icon{
     z-index: 1;
   }
 
+  span mat-icon{
+    cursor: pointer;
+  }
+
   .menu{
     flex-direction: column;
     width: 100%;
@@ -170,7 +174,14 @@ mat-icon{
     padding: 10px 0;
     background-color: var(--color-primario);
     color: white;
+    cursor: pointer;
     text-align: center;
+  }
+
+  .impostor:hover{
+    background-color: white;
+    color: var(--color-primario);
+    border: 1px solid var(--color-primario);
   }
 
   mat-icon{

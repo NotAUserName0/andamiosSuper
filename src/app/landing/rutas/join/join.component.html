@@ -1,0 +1,142 @@
+<div class="contenedor" [@fadeIn]>
+  <div class="title">¡Sé parte de la Familia Andamios Atlas!</div>
+  <div class="subtitle">EQUIPO ATLAS</div>
+  <div class="description">
+    Somos un equipo de gente talentosa en distintas disciplinas, que trabajamos
+    día a día con el más alto desempeño para construir una mejor calidad de
+    vida. Buscamos personas que quieran ser parte de un equipo exitoso en
+    constante desarrollo y que se especialicen en las mejores prácticas del
+    negocio, dada la especialidad del giro, nuestra empresa se enfoca en
+    preparar al personal directamente en una práctica garantizada y guiada por
+    ejecutivos de amplia experiencia. En Andamios Atlas contamos con diferentes
+    áreas operativas y funcionales en las cuales podrías desarrollarte:
+
+    <div class="grid">
+      <div class="item">
+        <img src="assets/finances.svg" alt="" class="icono" />
+        Finanzas
+      </div>
+      <div class="item">
+        <img src="assets/operator.svg" alt="" class="icono" />
+        Operaciones
+      </div>
+      <div class="item">
+        <img src="assets/sales.svg" alt="" class="icono" />
+        Comercial
+      </div>
+      <div class="item">
+        <img src="assets/logistic.svg" alt="" class="icono" />
+        Logística
+      </div>
+      <div class="item">
+        <img src="assets/engineering.svg" alt="" class="icono" />
+        Ingeniería
+      </div>
+      <div class="item">
+        <img src="assets/humans.svg" alt="" class="icono" />
+        Recursos Humanos
+      </div>
+    </div>
+  </div>
+
+  <div class="subtitle">TRAINEES ATLAS</div>
+  <div class="description">
+    Si eres recién egresado o estás estudiando, también tenemos una oportunidad
+    para ti en nuestro PROGRAMA DE TRAINEES ATLAS.
+    <br /><br />
+    El objetivo de nuestro programa es el desarrollo de jóvenes que están
+    estudiando los últimos semestres de alguna de las carreras afines a la
+    operación, o bien, ya concluyeron su carrera y buscan adquirir experiencia
+    mediante prácticas profesionales; en este programa buscamos capacitarlos y
+    desarrollar sus habilidades y aptitudes en un proyecto específico, bajo un
+    esquema de coaching y así adquirir la experiencia necesaria para poder
+    incursionar en el ámbito laboral en una vacante disponible dentro de
+    Andamios Atlas.
+    <div class="moto">¡ANDAMIOS ATLAS FORMANDO NUEVOS LÍDERES!</div>
+    <img src="" alt="" class="trainee" />
+  </div>
+
+  <section>
+    <div class="subtitle">¡TRABAJA CON NOSOTROS!</div>
+    <form action="" [formGroup]="formulario" (submit)="enviarFormulario()">
+      <label for="" class="form-label">Nombre Completo</label>
+      <input type="text" formControlName="nombre" class="form-control">
+      @if(formulario.get('nombre').invalid && formulario.get('nombre').touched || nombre){
+      <div class="error">
+        Nombre es requerido
+      </div>
+      }
+
+      <label for="" class="form-label">Escolaridad</label>
+      <select name="" id="" formControlName="escolaridad" class="form-control">
+        <option value="">-- Escoge una opcion --</option>
+        <option value="Titulado">Titulado</option>
+        <option value="Estudiante">Estudiante</option>
+        <option value="Trunca">Trunca</option>
+      </select>
+      @if(formulario.get('escolaridad').invalid && formulario.get('escolaridad').touched || escolaridad){
+      <div class="error">
+        Escolaridad es requerido
+      </div>
+      }
+
+      <label for="" class="form-label">Área de interés</label>
+      <select name="" id="" formControlName="area" class="form-control">
+        <option value="">-- Escoge una opcion --</option>
+        <option value="Finanzas">Finanzas</option>
+        <option value="Operaciones">Operaciones</option>
+        <option value="Comercial">Comercial</option>
+        <option value="Logística">Logística</option>
+        <option value="Ingeniería">Ingeniería</option>
+        <option value="Recursos Humanos">Recursos Humanos</option>
+      </select>
+      @if(formulario.get('area').invalid && formulario.get('area').touched || area){
+      <div class="error">
+        Área es requerida
+      </div>
+      }
+
+      <label for="" class="form-label">Correo Electronico</label>
+      <input type="text" formControlName="email" class="form-control">
+      @if(formulario.get('email').invalid && formulario.get('email').touched || email){
+      <div class="error">
+        Correo es requerido verificalo
+      </div>
+      }
+
+      <label for="" class="form-label">Telefóno de contacto</label>
+      <input type="text" formControlName="telefono" class="form-control">
+      @if(formulario.get('telefono').invalid && formulario.get('telefono').touched || telefono){
+      <div class="error">
+        Telefóno es requerido y solo admite numeros
+      </div>
+      }
+
+      <div class="mb-3" style="width: 100%;">
+        <label for="" class="form-label">Sube tu CV</label>
+        <input type="file" accept=".pdf" (change)="onFileChange($event)" formControlName="cv" class="form-control">
+        @if(formulario.get('cv').invalid && formulario.get('cv').touched || cv){
+        <div class="error">
+          CV es requerido y solo acepta pdf
+        </div>
+        }
+      </div>
+
+      <div class="mb-3 escala">
+        <label for="" class="form-label">Division</label>
+        <select name="" id="" class="form-control" formControlName="division">
+          <option value="" disabled>-- Escoge una opcion --</option>
+          <option value="andamios">Division Andamios Atlas</option>
+          <option value="conten">Division Conten</option>
+        </select>
+        @if(formulario.get('division').invalid && formulario.get('division').touched || division){
+        <div class="error">
+          Es importante seleccionar la division
+        </div>
+        }
+      </div>
+
+      <button type="submit" class="btn btn-outline-danger">Enviar</button>
+    </form>
+  </section>
+</div>
