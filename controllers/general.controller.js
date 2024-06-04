@@ -11,6 +11,7 @@ const Sucursales = require("../models/general/sucursales")
 const Imagenes_Sucursales = require("../models/general/imagenes_sucursales")
 const Comunicados = require("../models/proveedores")
 const Archivos = require("../models/archivos")
+//"data:image/*;base64," +
 
 const ImageValidator = require("../common/validator")
 
@@ -98,7 +99,7 @@ async function crearSeccion(req, res) { //requiere id de categoria, tipo de la c
                 seccion = await Secciones.create({
                     nombre: nombre, url: url,
                     descripcion: descripcion,
-                    mostrar_inicio: mostrar_inicio, imagen_inicio: "data:image/*;base64," + imagen_inicio.buffer.toString('base64'),
+                    mostrar_inicio: mostrar_inicio, imagen_inicio:  imagen_inicio.buffer.toString('base64'),
                     btn_pdf: btn_pdf, btn_contacto: btn_contacto,
                     categoria: categoria
                 })
@@ -107,7 +108,7 @@ async function crearSeccion(req, res) { //requiere id de categoria, tipo de la c
                 seccion = await Secciones.create({
                     nombre: nombre, url: url,
                     descripcion: descripcion,
-                    imagen_inicio: "data:image/*;base64," + imagen_inicio.buffer.toString('base64'),
+                    imagen_inicio:  imagen_inicio.buffer.toString('base64'),
                     categoria: categoria
                 })
                 break;
@@ -123,7 +124,7 @@ async function crearSeccion(req, res) { //requiere id de categoria, tipo de la c
                 seccion = await Secciones.create({
                     nombre: nombre, url: url,
                     descripcion: descripcion, btn_pdf:btn_pdf,
-                    imagen_inicio: "data:image/*;base64," + imagen_inicio.buffer.toString('base64'),
+                    imagen_inicio:  imagen_inicio.buffer.toString('base64'),
                     categoria: categoria
                 })
                 break;
@@ -201,7 +202,7 @@ async function modificarSeccion(req, res) {
             await Secciones.update({ nombre: nombre, 
                 url: url, descripcion: descripcion, 
                 mostrar_inicio: mostrar_inicio, 
-                imagen_inicio: "data:image/*;base64," +  file.buffer.toString('base64'),
+                imagen_inicio:   file.buffer.toString('base64'),
                 btn_pdf: btn_pdf, 
                 btn_contacto: btn_contacto }, { where: { id: id } }).then(() => {
                 res.status(200).json({ message: "Seccion modificada" })
@@ -341,7 +342,7 @@ async function agregarImagenASeccion(req, res) {// requiere el id de la seccion
 
         await files.forEach(async (file, index) => {
             if (ImageValidator.verificarImagen(file)) {
-                await Imagenes_Seccion.create({ nombre: file.fieldname, file: "data:image/*;base64," + file.buffer.toString('base64'), id_seccion: id_seccion }).then(() => {
+                await Imagenes_Seccion.create({ nombre: file.fieldname, file:  file.buffer.toString('base64'), id_seccion: id_seccion }).then(() => {
                     //res.status(200).json({ message: "Imagen agregada" })
                     errors.push({ message: "Imagen " + index + " agregada" })
                 }).catch((error) => {
@@ -385,7 +386,7 @@ async function modificarImagenSecccion(req, res) {
         const {id} = req.body
         const file = req.files[0]
 
-        await Imagenes_Seccion.update({nombre:file.fieldname, file: "data:image/*;base64," + file.buffer.toString('base64')}, {where:{id:id}}).then(()=>{
+        await Imagenes_Seccion.update({nombre:file.fieldname, file:  file.buffer.toString('base64')}, {where:{id:id}}).then(()=>{
             res.status(200).json({message: "Imagen modificada"})
         }).catch((error)=>{
             res.status(500).json({message: "Error al modificar imagen: "+error})
@@ -486,7 +487,7 @@ async function agregarImagenASubseccion(req, res) { //requiere el id de la subse
 
         await files.forEach(async (file, index) => {
             if (ImageValidator.verificarImagen(file)) {
-                await Imagenes_Subseccion.create({ nombre: file.fieldname, file: "data:image/*;base64," + file.buffer.toString('base64'), id_subseccion: id_subseccion }).then(() => {
+                await Imagenes_Subseccion.create({ nombre: file.fieldname, file:  file.buffer.toString('base64'), id_subseccion: id_subseccion }).then(() => {
                     //res.status(200).json({ message: "Imagen agregada" })
                     errors.push({ message: "Imagen " + index + " agregada" })
                 }).catch((error) => {
@@ -531,7 +532,7 @@ async function modificarImagenSubseccion(req, res) {
         const {id} = req.body
         const file = req.files[0]
 
-        await Imagenes_Subseccion.update({nombre:file.fieldname, file: "data:image/*;base64," + file.buffer.toString('base64')}, {where:{id:id}}).then(()=>{
+        await Imagenes_Subseccion.update({nombre:file.fieldname, file:  file.buffer.toString('base64')}, {where:{id:id}}).then(()=>{
             res.status(200).json({message: "Imagen modificada"})
         }).catch((error)=>{
             res.status(500).json({message: "Error al modificar imagen: "+error})
@@ -864,7 +865,7 @@ async function agregarImagenSucursal(req,res){
         const {id_sucursal, main} = req.body
         const file = req.files[0]
 
-        await Imagenes_Sucursales.create({nombre:file.fieldname, file: "data:image/*;base64," + file.buffer.toString('base64'), id_sucursal:id_sucursal, main:Boolean(main)}).then(()=>{
+        await Imagenes_Sucursales.create({nombre:file.fieldname, file:  file.buffer.toString('base64'), id_sucursal:id_sucursal, main:Boolean(main)}).then(()=>{
             res.status(200).json({message:"ok"})
         }).catch((err)=>{
             res.status(500).json({message:"error: "+err})
@@ -881,7 +882,7 @@ async function modificarImagenSucursal(req,res){
         const {id, main} = req.body
         const file = req.files[0]
 
-        await Imagenes_Sucursales.update({nombre:file.fieldname, file: "data:image/*;base64," + file.buffer.toString('base64'), main:Boolean(main)},{where:{id:id}}).then(()=>{
+        await Imagenes_Sucursales.update({nombre:file.fieldname, file: file.buffer.toString('base64'), main:Boolean(main)},{where:{id:id}}).then(()=>{
             res.status(200).json({message:"ok"})
         }).catch((err)=>{
             res.status(500).json({message:"error: "+err})

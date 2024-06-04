@@ -5,6 +5,7 @@ const Categorias = require("../models/general/categorias")
 const Secciones = require("../models/general/secciones")
 const Subsecciones = require("../models/general/subsecciones")
 const Carrusel = require("../models/andamios/carrusel")
+const Anuncio = require("../models/andamios/anuncio")
 
 async function obtenerArchivo(req, res) {
     const {origen} = req.params
@@ -122,10 +123,55 @@ async function obtenerCarrusel(req,res){
     }
 }
 
+async function obtenerAnuncio(req, res) {
+    try {
+        await Anuncio.findAll().then((result) => {
+            res.status(200).send(result[0])
+        })
+    } catch (error) {
+        res.status(500).send('error: ' + error)
+    }
+}
+
+async function obtenerInicio(req,res){
+    try{
+
+        const{area} = req.params
+        
+        const categorias = await Categorias.findAll({
+            attributes: ['id', 'nombre', 'url'],
+            where: { area: area , mostrar_inicio:true},
+          });
+
+        const inicio = [];
+
+        for(const categoria of categorias){
+            const secciones = await Secciones.findAll({
+                where: { categoria: categoria.id, mostrar_inicio:true },
+                attributes: ['id', 'nombre', 'url', 'imagen_inicio'],
+            });
+
+            inicio.push({
+                id: categoria.id,
+                titulo: categoria.nombre,
+                url: categoria.url,
+                secciones: secciones,
+            });
+        }
+
+        res.status(200).send(inicio)
+
+    }catch(err){
+        res.status(500).json({message:"error"})
+    }
+}
+
 module.exports = {
     obtenerArchivo,
     obtenerComunicados,
     crearSolicitud,
     navbar,
-    obtenerCarrusel
+    obtenerCarrusel,
+    obtenerAnuncio,
+    obtenerInicio
 }
