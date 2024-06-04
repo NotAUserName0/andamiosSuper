@@ -124,7 +124,7 @@ export class FormularioComponent {
     } else if (objetivo == 'seccion') {
       //obtener seccion
       this.apiService.obtenerSeccion(id).subscribe((seccion) => {
-        //console.log(seccion)
+        console.log(seccion)
 
         switch (tipo) {
           case 'A':
@@ -248,7 +248,7 @@ export class FormularioComponent {
     // Verifica si el input 'elemento' ha cambiado
     if (changes['elemento']) {
       // Ejecuta la acción que deseas realizar
-      console.log(this.elemento)
+      //console.log(this.elemento)
       this.resetOnChange();
       this.controladorEditar();
     }
