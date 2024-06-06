@@ -26,7 +26,11 @@ const Categorias = db.sequelize.define('Categorias', {
     mostrar_inicio:{
         type: DataTypes.BOOLEAN,
         allowNull: true,
-    }
+    },
+    banner:{
+        type: DataTypes.TEXT,
+        allowNull: true,
+    },
 },{
     timestamps:false
 })

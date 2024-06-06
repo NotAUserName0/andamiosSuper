@@ -19,12 +19,25 @@ const ImageValidator = require("../common/validator")
 async function crearCategoria(req, res) {
     try {
         const { nombre, tipo, url, area, mostrar_inicio } = req.body
+        const file = req.files[0]
 
-        await Categorias.create({ nombre: nombre, tipo: tipo, url: url, area: area, mostrar_inicio: mostrar_inicio }).then(() => {
-            res.status(200).json({ message: "Categoria creada" })
-        }).catch((error) => {
-            res.status(500).json({ message: "Error al crear categoria: " + error })
-        })
+        if(file){
+            await Categorias.create({ nombre: nombre, tipo: tipo, url: url, area: area, 
+                mostrar_inicio: mostrar_inicio,
+                banner: "data:image/*;base64,"+ file.buffer.toString("base64")  }).then(() => {
+                res.status(200).json({ message: "Categoria creada" })
+            }).catch((error) => {
+                res.status(500).json({ message: "Error al crear categoria: " + error })
+            })
+        }else{
+            await Categorias.create({ nombre: nombre, tipo: tipo, url: url, area: area, 
+                mostrar_inicio: mostrar_inicio }).then(() => {
+                res.status(200).json({ message: "Categoria creada" })
+            }).catch((error) => {
+                res.status(500).json({ message: "Error al crear categoria: " + error })
+            })
+        }
+
     } catch (error) {
         res.status(500).json({ message: "Error de endpoint" })
     }
@@ -48,12 +61,25 @@ async function obtenerCategoria(req, res) {
 async function modificarCategoria(req, res) {
     try {
         const { id, nombre, tipo, url, area, mostrar_inicio } = req.body
+        const file = req.files[0]
 
-        await Categorias.update({ nombre: nombre, tipo: tipo, url: url, area: area, mostrar_inicio: mostrar_inicio }, { where: { id: id } }).then(() => {
-            res.status(200).json({ message: "Categoria modificada" })
-        }).catch((error) => {
-            res.status(500).json({ message: "Error al modificar categoria: " + error })
-        })
+        if(file){
+            await Categorias.update({ nombre: nombre, tipo: tipo, url: url, area: area, 
+                mostrar_inicio: mostrar_inicio,
+                banner: "data:image/*;base64,"+ file.buffer.toString("base64") }, { where: { id: id } }).then(() => {
+                res.status(200).json({ message: "Categoria modificada" })
+            }).catch((error) => {
+                res.status(500).json({ message: "Error al modificar categoria: " + error })
+            })
+        }else{
+            await Categorias.update({ nombre: nombre, tipo: tipo, url: url, area: area, 
+                mostrar_inicio: mostrar_inicio, banner: null}, { where: { id: id } }).then(() => {
+                res.status(200).json({ message: "Categoria modificada" })
+            }).catch((error) => {
+                res.status(500).json({ message: "Error al modificar categoria: " + error })
+            })
+        }
+
     } catch (error) {
         res.status(500).json({ message: "Error de endpoint" })
     }
@@ -99,7 +125,7 @@ async function crearSeccion(req, res) { //requiere id de categoria, tipo de la c
                 seccion = await Secciones.create({
                     nombre: nombre, url: url,
                     descripcion: descripcion,
-                    mostrar_inicio: mostrar_inicio, imagen_inicio:  imagen_inicio.buffer.toString('base64'),
+                    mostrar_inicio: mostrar_inicio, imagen_inicio: "data:image/*;base64,"+imagen_inicio.buffer.toString('base64'),
                     btn_pdf: btn_pdf, btn_contacto: btn_contacto,
                     categoria: categoria
                 })
@@ -108,7 +134,7 @@ async function crearSeccion(req, res) { //requiere id de categoria, tipo de la c
                 seccion = await Secciones.create({
                     nombre: nombre, url: url,
                     descripcion: descripcion,
-                    imagen_inicio:  imagen_inicio.buffer.toString('base64'),
+                    imagen_inicio: "data:image/*;base64,"+imagen_inicio.buffer.toString('base64'),
                     categoria: categoria
                 })
                 break;
@@ -124,7 +150,7 @@ async function crearSeccion(req, res) { //requiere id de categoria, tipo de la c
                 seccion = await Secciones.create({
                     nombre: nombre, url: url,
                     descripcion: descripcion, btn_pdf:btn_pdf,
-                    imagen_inicio:  imagen_inicio.buffer.toString('base64'),
+                    imagen_inicio: "data:image/*;base64,"+imagen_inicio.buffer.toString('base64'),
                     categoria: categoria
                 })
                 break;
@@ -202,7 +228,7 @@ async function modificarSeccion(req, res) {
             await Secciones.update({ nombre: nombre, 
                 url: url, descripcion: descripcion, 
                 mostrar_inicio: mostrar_inicio, 
-                imagen_inicio:   file.buffer.toString('base64'),
+                imagen_inicio:  "data:image/*;base64,"+file.buffer.toString('base64'),
                 btn_pdf: btn_pdf, 
                 btn_contacto: btn_contacto }, { where: { id: id } }).then(() => {
                 res.status(200).json({ message: "Seccion modificada" })

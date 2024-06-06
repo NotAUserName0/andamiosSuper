@@ -7,6 +7,14 @@ const jwt = require('../auth/jwt.auth')
 const andamiosController = require('../controllers/general.controller')
 
 //zona FORMDATA /////////////////////////////////////////////////////////////////////////////////////////////////
+
+//CATEGORIAS
+router.post('/crearCategoria',upload.any(),jwt.tokenMiddleware, andamiosController.crearCategoria)
+router.get('/obtenerCategorias',jwt.tokenMiddleware, andamiosController.obtenerCategorias)
+router.get('/obtenerCategoria/:id',jwt.tokenMiddleware, andamiosController.obtenerCategoria)
+router.put('/modificarCategoria',upload.any(),jwt.tokenMiddleware,andamiosController.modificarCategoria)
+router.delete('/eliminarCategoria/:id',jwt.tokenMiddleware, andamiosController.eliminarCategoria)
+
 //SECCION
 router.post('/crearSeccion',upload.any() ,jwt.tokenMiddleware ,andamiosController.crearSeccion)
 router.get('/obtenerSeccion/:id',jwt.tokenMiddleware,andamiosController.obtenerSeccion)
@@ -57,12 +65,6 @@ router.get('/obtenerArchivo/:origen',jwt.tokenMiddleware, andamiosController.obt
 //zona JSON /////////////////////////////////////////////////////////////////////////////////////////////////
 router.use(express.json())
 
-//CATEGORIAS
-router.post('/crearCategoria',jwt.tokenMiddleware, andamiosController.crearCategoria)
-router.get('/obtenerCategorias',jwt.tokenMiddleware, andamiosController.obtenerCategorias)
-router.get('/obtenerCategoria/:id',jwt.tokenMiddleware, andamiosController.obtenerCategoria)
-router.put('/modificarCategoria',jwt.tokenMiddleware,andamiosController.modificarCategoria)
-router.delete('/eliminarCategoria/:id',jwt.tokenMiddleware, andamiosController.eliminarCategoria)
 //SUCURSALES
 router.post('/crearSucursal',jwt.tokenMiddleware, andamiosController.crearSucursal)
 router.get('/obtenerSucursales/:division',jwt.tokenMiddleware, andamiosController.obtenerSucursales)
