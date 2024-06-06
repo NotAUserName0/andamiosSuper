@@ -5,5 +5,6 @@ export class CategoriaSingle {
   url:string
   area:string
   mostrar_inicio:boolean
+  banner:string
 }
 

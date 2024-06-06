@@ -5,7 +5,7 @@ export class SeccionSingle{
   descripcion: string
   btn_pdf: boolean
   btn_contacto: boolean
-  imagen_inicio:string
+  imagen_inicio: string
   mostrar_inicio: boolean
   categoria:number
   pdf: any;

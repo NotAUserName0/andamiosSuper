@@ -9,6 +9,8 @@ import { fadeInAnimation } from '../../../../effects/fadeIn';
 import { ApiService } from '../../../../services/api.service';
 import Swal from 'sweetalert2';
 import { LoadingComponent } from '../../../../effects/loading/loading.component';
+import { ImageService } from '../../../../services/image.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-formulario',
@@ -67,9 +69,15 @@ export class FormularioComponent {
   inicio_img: File;
   inicio_imgUrl: string;
 
-  loading:boolean = false;
+  banner: boolean = false;
+  bannerImage: File;
+  bannerImageURL: string;
 
-  constructor(private fb: FormBuilder, private apiService: ApiService) {
+  division: string;
+
+  loading: boolean = false;
+
+  constructor(private fb: FormBuilder, private apiService: ApiService, private imgService: ImageService, private activatedroute: ActivatedRoute) {
     this.formulario = this.fb.group({
       nombre: ['', Validators.required],
       url: [''],
@@ -84,12 +92,16 @@ export class FormularioComponent {
       nombre: ['', Validators.required],
       url: ['', Validators.required],
       tipo: ['', Validators.required],
-      area: "andamios",
-      mostrar_inicio: 0
+      area: "",
+      mostrar_inicio: 0,
+      banner: ['']
     })
 
     afterRender(() => {
       window.scrollTo(0, 0);
+      this.activatedroute.params.subscribe(params => {
+        this.division = params['area'];
+      })
     })
   }
 
@@ -119,6 +131,10 @@ export class FormularioComponent {
           url: categoria.url,
           mostrar_inicio: categoria.mostrar_inicio
         })
+
+        this.bannerImageURL = categoria.banner;
+        this.banner = categoria.mostrar_inicio;
+
         this.loading = false;
       })
     } else if (objetivo == 'seccion') {
@@ -280,6 +296,15 @@ export class FormularioComponent {
     this.inicio_imgUrl = URL.createObjectURL(event.target.files[0]);
   }
 
+  openBannerInput() {
+    this.banner = !this.banner;
+  }
+
+  onBannerChange(event) {
+    this.bannerImage = event.target.files[0];
+    this.bannerImageURL = URL.createObjectURL(event.target.files[0]);
+  }
+
   getFile() {
     document.getElementById('file-input').click();
   }
@@ -300,6 +325,7 @@ export class FormularioComponent {
     this.inicio_imgUrl = null;
     this.pdfAlreadyExists = false;
     this.boton_archivo = false;
+    this.bannerImage = null;
   }
 
   closeForm() {
@@ -314,10 +340,11 @@ export class FormularioComponent {
     this.inicio_imgUrl = null;
     this.pdfAlreadyExists = false;
     this.boton_archivo = false;
+    this.bannerImage = null;
   }
 
   //small reset
-  smallReset(){
+  smallReset() {
     this.formulario.reset();
     this.formularioCategoria.reset();
     this.files = [];
@@ -328,6 +355,7 @@ export class FormularioComponent {
     this.inicio_imgUrl = null;
     this.pdfAlreadyExists = false;
     this.boton_archivo = false;
+    this.bannerImage = null;
   }
 
   sendForm() {
@@ -338,11 +366,17 @@ export class FormularioComponent {
       if (this.formularioCategoria.valid) {
         if (this.elemento.accion === "crear") {
 
-          this.formularioCategoria.patchValue({
-            area: 'andamios'
-          })
+          const formData = new FormData();
+          formData.append('nombre', this.formularioCategoria.get('nombre').value);
+          formData.append('url', this.formularioCategoria.get('url').value);
+          formData.append('tipo', this.formularioCategoria.get('tipo').value);
+          formData.append('area', this.division);
+          formData.append('mostrar_inicio', this.formularioCategoria.get('mostrar_inicio').value);
+          if(this.bannerImage){
+            formData.append('banner', this.bannerImage, this.bannerImage?.name);
+          }
 
-          this.apiService.agregarCategoria(JSON.stringify(this.formularioCategoria.value)).subscribe(data => {
+          this.apiService.agregarCategoria(formData).subscribe(data => {
             Swal.fire({
               title: 'Categoria agregada',
               icon: 'success',
@@ -378,17 +412,20 @@ export class FormularioComponent {
             confirmButtonColor: '#cf142b',
             cancelButtonColor: '#6c757d'
           }).then((result) => {
-            if(result.isConfirmed){
-              let categoria = {
-                id: this.elemento.id,
-                nombre: this.formularioCategoria.get('nombre').value,
-                tipo: this.formularioCategoria.get('tipo').value,
-                url: this.formularioCategoria.get('url').value,
-                area: 'andamios',
-                mostrar_inicio: this.formularioCategoria.get('mostrar_inicio').value
+            if (result.isConfirmed) {
+
+              const formData = new FormData();
+              formData.append('id', this.elemento.id);
+              formData.append('nombre', this.formularioCategoria.get('nombre').value);
+              formData.append('url', this.formularioCategoria.get('url').value);
+              formData.append('tipo', this.formularioCategoria.get('tipo').value);
+              formData.append('area', this.division);
+              formData.append('mostrar_inicio', this.formularioCategoria.get('mostrar_inicio').value);
+              if (this.bannerImage) {
+                formData.append('banner', this.bannerImage, this.bannerImage?.name);
               }
 
-              this.apiService.modificarCategoria(JSON.stringify(categoria)).subscribe(() => {
+              this.apiService.modificarCategoria(formData).subscribe(() => {
                 Swal.fire({
                   title: 'Categoria modificada',
                   icon: 'success',
@@ -411,7 +448,7 @@ export class FormularioComponent {
                   this.loading = false;
                 })
               })
-            }else{
+            } else {
               this.loading = false;
             }
           })
@@ -479,7 +516,7 @@ export class FormularioComponent {
                 confirmButtonColor: '#cf142b',
                 cancelButtonColor: '#6c757d'
               }).then((result) => {
-                if(result.isConfirmed){
+                if (result.isConfirmed) {
                   if (this.formulario.get('btn_pdf').value !== true) { //modificacion de eliminar
                     //elimina archivo
                     this.eliminarArchivoSeccion(this.elemento.id);
@@ -494,7 +531,7 @@ export class FormularioComponent {
                   }
 
                   this.modificarSeccion(formData);
-                }else{
+                } else {
                   this.loading = false;
                 }
               })
@@ -523,9 +560,9 @@ export class FormularioComponent {
                 confirmButtonColor: '#cf142b',
                 cancelButtonColor: '#6c757d'
               }).then((result) => {
-                if(result.isConfirmed){
+                if (result.isConfirmed) {
                   this.modificarSeccion(formData);
-                }else{
+                } else {
                   this.loading = false;
                 }
               })
@@ -551,9 +588,9 @@ export class FormularioComponent {
                 confirmButtonColor: '#cf142b',
                 cancelButtonColor: '#6c757d'
               }).then((result) => {
-                if(result.isConfirmed){
+                if (result.isConfirmed) {
                   this.modificarSeccion(formData);
-                }else{
+                } else {
                   this.loading = false;
                 }
               })
@@ -583,7 +620,7 @@ export class FormularioComponent {
                 confirmButtonColor: '#cf142b',
                 cancelButtonColor: '#6c757d'
               }).then((result) => {
-                if(result.isConfirmed){
+                if (result.isConfirmed) {
                   if (this.formulario.get('btn_pdf').value !== true) { //modificacion de eliminar
                     //elimina archivo
                     this.eliminarArchivoSeccion(this.elemento.id);
@@ -598,7 +635,7 @@ export class FormularioComponent {
                   }
 
                   this.modificarSeccion(formData);
-                }else{
+                } else {
                   this.loading = false;
                 }
               })
@@ -635,7 +672,7 @@ export class FormularioComponent {
             confirmButtonColor: '#cf142b',
             cancelButtonColor: '#6c757d'
           }).then((result) => {
-            if(result.isConfirmed){
+            if (result.isConfirmed) {
               //editar subseccion
               //al dar click primero verifica el pdf
               if (this.formulario.get('btn_pdf').value !== true) {
@@ -654,7 +691,7 @@ export class FormularioComponent {
               }
 
               this.modificarSubseccion(this.elemento.id);
-            }else{
+            } else {
               this.loading = false;
             }
           })
@@ -842,7 +879,7 @@ export class FormularioComponent {
 
   //IMAGENES
   modificarImagen(file, index) {
-    if(this.elemento.objetivo === 'seccion'){
+    if (this.elemento.objetivo === 'seccion') {
       if (file.id !== null) { //en la base de datos, es decir id != null
         //petición put
 
@@ -892,7 +929,7 @@ export class FormularioComponent {
         input.click();
 
       }
-    }else if(this.elemento.objetivo === 'subseccion'){
+    } else if (this.elemento.objetivo === 'subseccion') {
       if (file.id !== null) { //en la base de datos, es decir id != null
         //petición put
 
@@ -946,7 +983,7 @@ export class FormularioComponent {
   }
 
   eliminarImagen(file, index) {
-    if(this.elemento.objetivo === 'seccion'){
+    if (this.elemento.objetivo === 'seccion') {
       if (file.id !== null) {
         this.apiService.eliminarImagenSeccion(file.id).subscribe(data => {
           this.fileUrl.splice(index, 1);
@@ -968,7 +1005,7 @@ export class FormularioComponent {
         this.fileUrl.splice(index, 1);
         //console.log(this.files)
       }
-    }else if(this.elemento.objetivo === 'subseccion'){
+    } else if (this.elemento.objetivo === 'subseccion') {
       if (file.id !== null) {
         this.apiService.eliminarImagenSubseccion(file.id).subscribe(data => {
           this.fileUrl.splice(index, 1);
@@ -1231,6 +1268,8 @@ export class FormularioComponent {
       })
     })
   }
+
+
 
 
 }

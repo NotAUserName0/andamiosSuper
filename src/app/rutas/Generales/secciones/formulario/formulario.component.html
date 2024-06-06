@@ -42,8 +42,21 @@
 
     <div class="mb-3">
       <label for="" class="form-label pe-2">¿Saldra en la pagina de inicio?</label>
-      <input class="form-check-input" type="checkbox" formControlName="mostrar_inicio">
+      <input class="form-check-input" type="checkbox" formControlName="mostrar_inicio" (change)="openBannerInput()">
     </div>
+
+    @if(banner){
+      <div class="mb-3">
+        <label for="" class="form-label">Banner de la pagina de inicio</label>
+        <input type="file" class="form-control" formControlName="banner" (change)="onBannerChange($event)">
+
+        @if(bannerImageURL){
+          <div class="mb-3">
+            <img id="image_inicio" src="{{bannerImageURL}}" alt="image" >
+          </div>
+        }
+      </div>
+    }
 
     <button type="submit">Enviar</button>
 
@@ -115,7 +128,7 @@
         (change)="onInicioImgChange($event)">
       @if(inicio_imgUrl){
       <br>
-      <img id="image_inicio" src="{{inicio_imgUrl}}" alt="">
+      <img id="image_inicio" src="{{inicio_imgUrl}}" alt="image">
       }
     </div>
     }

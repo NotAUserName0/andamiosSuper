@@ -28,7 +28,6 @@ export class ContactoComponent {
         this.area = params['area'];
         this.obtenerSolicitudes()
       })
-
     })
    }
 
@@ -159,7 +158,7 @@ export class ContactoComponent {
       }
     })
   }
-  
+
 
   goBack() {
     window.history.back();

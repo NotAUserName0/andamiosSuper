@@ -30,8 +30,8 @@ export class ApiService {
     return this.http.get<Categoria[]>(`${this.URL}/navbar/${area}`);
   }
   //CATEGORIA
-  agregarCategoria(categoria:any){
-    return this.http.post(`${this.URL}/crearCategoria`,categoria, this.httpOptions);
+  agregarCategoria(categoria:FormData){
+    return this.http.post(`${this.URL}/crearCategoria`,categoria);
   }
 
   eliminarCategoria(id){
@@ -42,8 +42,8 @@ export class ApiService {
     return this.http.get<CategoriaSingle>(`${this.URL}/obtenerCategoria/${id}`);
   }
 
-  modificarCategoria(categoria:any){
-    return this.http.put(`${this.URL}/modificarCategoria`, categoria, this.httpOptions);
+  modificarCategoria(categoria:FormData){
+    return this.http.put(`${this.URL}/modificarCategoria`, categoria);
   }
 
   //SECCION
