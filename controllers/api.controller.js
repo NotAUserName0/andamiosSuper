@@ -135,14 +135,12 @@ async function obtenerAnuncio(req, res) {
 
 async function obtenerInicio(req,res){
     try{
-
         const{area} = req.params
         
         const categorias = await Categorias.findAll({
-            attributes: ['id', 'nombre', 'url'],
+            attributes: ['id', 'nombre', 'url', 'banner'],
             where: { area: area , mostrar_inicio:true},
           });
-
         const inicio = [];
 
         for(const categoria of categorias){
@@ -155,6 +153,7 @@ async function obtenerInicio(req,res){
                 id: categoria.id,
                 titulo: categoria.nombre,
                 url: categoria.url,
+                banner: categoria.banner,
                 secciones: secciones,
             });
         }

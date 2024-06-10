@@ -28,7 +28,7 @@ const Categorias = db.sequelize.define('Categorias', {
         allowNull: true,
     },
     banner:{
-        type: DataTypes.TEXT,
+        type: DataTypes.TEXT('long'),
         allowNull: true,
     },
 },{
