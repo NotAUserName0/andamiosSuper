@@ -19,7 +19,8 @@ export class PetitionsService {
     /*cadena = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + cadena);
     return cadena*/
     if (cadena) {
-      cadena = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + cadena);
+      //cadena = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + cadena);
+      cadena = this.sanitizer.bypassSecurityTrustUrl(cadena);
     return cadena
     } else {
       return null;

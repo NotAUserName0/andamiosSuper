@@ -1,24 +1,80 @@
 <div class="contenedor">
-  <div class="carrusel">
-    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
-      <div class="carousel-inner">
 
-        @for (slide of slides; track slide; let i = $index) {
-          <div class="carousel-item" [class.active]="i === 2">
-            <img src="{{slide.file}}" class="d-block w-100" alt="slide {{i+1}}">
-          </div>
+  @if(slides?.length > 0){
+  <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      @for (slide of slides; track slide ; let isFirst = $first) {
+      <div class="carousel-item" [class.active]="isFirst">
+        @if(imgResponsive){
+        <img [src]="slide.fileResponsive" class="d-block w-100" alt="...">
+        }@else {
+        <img [src]="slide.file" class="d-block w-100" alt="...">
         }
-
       </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-      </button>
+      }
     </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+      data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+      data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
   </div>
+  }
+
+  @if(anuncio){
+  <section class="anuncio">
+    <div class="row">
+      <div class="col-8 textos"> {{anuncio?.text}} </div>
+      <!--Corrige el link al subirlo al serividor-->
+      @if (anuncio?.hasBtn){
+      <div class="col link"><a href="{{anuncio.url}}">{{anuncio?.btnText}} </a></div>
+      }
+    </div>
+  </section>
+  }
+
+  <section class="contenido">
+    <div class="video-background">
+      <video autoplay muted loop playsinline>
+        <source src="assets/vbg1.webm" type="video/webm">
+        Tu navegador no soporta el elemento de video.
+      </video>
+    </div>
+
+    @for (elemento of elementos; track elemento) {
+    <section class="categoria">
+      <h1>{{elemento.titulo}}</h1>
+      @if(elemento.banner){
+        <img id="banner" [src]="elemento.banner" alt="banner-categoria">
+      }
+      <div class="secciones">
+        @for (seccion of elemento.secciones; track seccion) {
+        <a href="seccion/{{seccion.url}}" class="item">
+          <img [src]="seccion.imagen_inicio" alt="">
+          <h4>{{seccion.nombre}}</h4>
+        </a>
+        }
+      </div>
+    </section>
+    }
+
+    <h1 class="title">Certificaciones</h1>
+    <section class="catalogos" id="certi">
+      <div class="item"><img src="assets/logo-gestion-de-calidad.jpg" alt="certificacion"></div>
+      <div class="item"><img src="assets/logo-industria-limpia-mexico.jpg" alt="certificacion"></div>
+      <div class="item"><img src="assets/logo-saia.png" alt="certificacion"></div>
+    </section>
+  </section>
 
 </div>
+
+@if(loading){
+  <app-spinner></app-spinner>
+}
+
+
