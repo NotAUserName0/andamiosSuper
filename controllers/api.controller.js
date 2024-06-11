@@ -165,6 +165,39 @@ async function obtenerInicio(req,res){
     }
 }
 
+async function obtenerTipoCategoria(req,res) {
+
+    try {
+        const { url } = req.params
+        
+        await Categorias.findOne({
+            attributes: ['id','tipo'],
+            where: { url: url },
+          }).then((result) => {
+            res.status(200).send(result)
+        })
+    } catch (error) {
+        res.status(500).json({ message: error });
+    }
+    
+}
+
+async function obtenerSecciones(req,res){
+    try{
+        const {id} = req.params
+
+        const secciones = await Secciones.findAll({
+            where: { categoria: id },
+            attributes: ['id', 'nombre', 'tipo', 'url', 'descripcion', 'mostrar_inicio', 'imagen_inicio', 'btn_pdf', 'btn_contacto'],
+        });
+
+        res.status(200).send(secciones)
+    }catch(err){
+        res.status(500).json({message:"error"})
+    }
+
+}
+
 module.exports = {
     obtenerArchivo,
     obtenerComunicados,
@@ -172,5 +205,6 @@ module.exports = {
     navbar,
     obtenerCarrusel,
     obtenerAnuncio,
-    obtenerInicio
+    obtenerInicio,
+    obtenerTipoCategoria
 }
