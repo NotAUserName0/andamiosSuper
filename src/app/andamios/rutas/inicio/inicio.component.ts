@@ -28,11 +28,11 @@ export class InicioComponent {
 
       this.loading = true;
 
-      afterRender(async () => {
+      afterRender(() => {
         window.scrollTo(0, 0)
-        await this.obtenerCarrusel()
-        await this.obtenerAnuncio()
-        await this.obtenerInicio()
+        this.obtenerCarrusel()
+        this.obtenerAnuncio()
+        this.obtenerInicio()
         this.resizeSubscription = fromEvent(window, 'resize').subscribe(() => {
           if (window.innerWidth < 749) {
             this.imgResponsive = true

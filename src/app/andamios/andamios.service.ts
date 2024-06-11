@@ -28,4 +28,8 @@ export class AndamiosService {
   obtenerInicio(){
     return this.http.get(`${this.URL}obtenerInicio/andamios`)
   }
+
+  obtenerTipoCategoria(tipo:string){
+    return this.http.get(`${this.URL}obtenerTipoCategoria/${tipo}`)
+  }
 }
