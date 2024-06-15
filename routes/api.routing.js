@@ -15,5 +15,8 @@ router.get('/obtenerTipoCategoria/:url', api.obtenerTipoCategoria)
 
 router.post('/crearSolicitud',upload.any(),api.crearSolicitud)
 
+router.use(express.json())
+router.post('/obtenerSecciones',api.obtenerSecciones)
+
 
 module.exports = router;
