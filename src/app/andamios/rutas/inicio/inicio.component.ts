@@ -27,12 +27,11 @@ export class InicioComponent {
   constructor(private andamiosService: AndamiosService, private petitionsService: PetitionsService) {
 
       this.loading = true;
-
+      this.obtenerCarrusel()
+      this.obtenerAnuncio()
+      this.obtenerInicio()
       afterRender(() => {
         window.scrollTo(0, 0)
-        this.obtenerCarrusel()
-        this.obtenerAnuncio()
-        this.obtenerInicio()
         this.resizeSubscription = fromEvent(window, 'resize').subscribe(() => {
           if (window.innerWidth < 749) {
             this.imgResponsive = true
@@ -86,7 +85,6 @@ export class InicioComponent {
 
       this.elementos = data;
       this.loading = false;
-      console.log(this.elementos)
     })
   }
 

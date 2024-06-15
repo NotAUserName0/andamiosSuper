@@ -1,6 +1,6 @@
 import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 
 @Injectable({
   providedIn: 'root'
@@ -43,9 +43,18 @@ export class PetitionsService {
       const url = URL.createObjectURL(blob);
 
       return url
-    return cadena
+    //return cadena
     } else {
       return null;
     }
+  }
+
+  sanitizarPDF_main(cadena){
+    const pdfUrl = `data:application/pdf;base64,${cadena}`;
+    return this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
+  }
+
+  sanitizeHtml(content: string): SafeHtml {
+    return this.sanitizer.bypassSecurityTrustHtml(content);
   }
 }

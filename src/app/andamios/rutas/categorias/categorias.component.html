@@ -1,1 +1,101 @@
-<p>categorias works!</p>
+<div class="contenedor" [@fadeIn]>
+
+  @switch (categoria?.tipo) {
+  @case ('A') {
+  <h1>{{categoria?.nombre}}</h1>
+  <div class="contenido">
+    <div class="grid">
+      @for (seccion of secciones; track seccion) {
+      <a href="seccion/{{seccion.url}}" class="item">
+        <img [src]="seccion.imagen_inicio" alt="">
+        <p>{{seccion.nombre}}</p>
+      </a>
+      }
+    </div>
+  </div>
+  }
+  @case ('B') {
+  <h1>{{categoria?.nombre}}</h1>
+  <div class="contenido">
+    <div class="grid" id="grid-B">
+      @for (seccion of secciones; track seccion; let i = $index) {
+      <div class="foto" (click)="openPop(i)">
+        <img [src]="seccion.imagen_inicio" alt="">
+      </div>
+      }
+    </div>
+
+    <div class="pop" id="pop">
+      <mat-icon class="icon-close" (click)="closePop()">close</mat-icon>
+      <div class="contenido-pop" id="contenido-pop">
+        <img [src]="popSeccion?.imagen_inicio" alt="">
+        <h3>{{popSeccion?.nombre}}</h3>
+        <small [innerHTML]="popSeccion?.descripcion"></small>
+      </div>
+    </div>
+  </div>
+  }
+  @case ('C') {
+
+  <h1>{{categoria?.nombre}}</h1>
+  <div class="contenido">
+
+    @for (seccion of secciones; track seccion) {
+    <div class="elemento-lista">
+      <div class="carrusel">
+        <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+          <div class="carousel-inner">
+            @for (slide of seccion.imagenes; track slide ; let isFirst = $first) {
+            <div class="carousel-item" [class.active]="isFirst">
+              <img [src]="slide.file" class="d-block w-100" alt="...">
+            </div>
+            }
+          </div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+            data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+      </div>
+      <div class="elemento-contenido">
+        <h3>{{seccion.nombre}}</h3>
+        <div class="elemento-descripcion" [innerHTML]="seccion.descripcion"></div>
+        @if(seccion.btn_contacto){
+        <a href="andamios/contacto">Contacto</a>
+        }
+      </div>
+    </div>
+    }
+
+  </div>
+  }
+  @case ('D') {
+  @for (seccion of secciones; track seccion; let i = $index) {
+  <div class="panel" [ngClass]="{'pares': i % 2 !== 0}">
+    <img [src]="seccion.imagen_inicio" alt="">
+    <div class="panel-content">
+      <h3>{{seccion.nombre}}</h3>
+      <div class="panel-description" [innerHTML]="seccion.descripcion"></div>
+      @if(seccion.btn_pdf){
+      <button type="button" (click)="downloadFile(seccion.archivos[0].nombre,seccion.archivos[0].file)">{{removePdfPrefix(seccion.archivos[0].nombre)}}</button>
+      }
+    </div>
+  </div>
+  }
+  }
+  @default {
+  <p>Tipo no encontrado</p>
+  }
+  }
+
+</div>
+
+@if(loading){
+  <app-spinner></app-spinner>
+}

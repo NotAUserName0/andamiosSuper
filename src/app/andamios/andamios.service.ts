@@ -3,6 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Carrusel } from './models/carrusel';
 import { Anuncio } from './models/anuncio';
+import { PetitionsService } from '../petitions.service';
+import { Seccion } from './models/seccion';
+import { Categoria } from './models/categoria';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +14,7 @@ export class AndamiosService {
 
   private URL = "http://localhost:3000/api/"
 
-  constructor(private http:HttpClient) { }
+  constructor(private http:HttpClient, private petition:PetitionsService) { }
 
   obtenerNavbar(){
     return this.http.get(`${this.URL}navbar/andamios`)
@@ -29,7 +32,11 @@ export class AndamiosService {
     return this.http.get(`${this.URL}obtenerInicio/andamios`)
   }
 
-  obtenerTipoCategoria(tipo:string){
-    return this.http.get(`${this.URL}obtenerTipoCategoria/${tipo}`)
+  obtenerTipoCategoria(tipo:string):Observable<Categoria>{
+    return this.http.get<Categoria>(`${this.URL}obtenerTipoCategoria/${tipo}`)
+  }
+
+  obtenerSecciones(categoria:any):Observable<Seccion[]>{
+    return this.http.post<Seccion[]>(`${this.URL}obtenerSecciones`,categoria,this.petition.httpOptions)
   }
 }
