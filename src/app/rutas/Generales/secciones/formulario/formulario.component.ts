@@ -270,7 +270,7 @@ export class FormularioComponent {
     }
   }
 
-  onFileChange(event, id) {
+  onFileChange(event, id) { //agregar try catch
     if (event.target.files) {
       this.files.push(event.target.files[0]);
 
@@ -1036,7 +1036,7 @@ export class FormularioComponent {
     imagenes.append('id_seccion', id_seccion);
     this.files.forEach(file => {
       if (file !== null)
-        imagenes.append('imagenes', file, file.name);
+        imagenes.append('imagenes', file, file?.name);
     });
 
     this.apiService.agregarImagenesASeccion(imagenes).subscribe(data => {
