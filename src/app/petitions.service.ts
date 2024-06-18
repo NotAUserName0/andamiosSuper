@@ -8,26 +8,26 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class PetitionsService {
 
   httpOptions = {
-    headers : new HttpHeaders({
-      'Content-Type':'application/json'
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
     })
   };
 
-  constructor(private sanitizer:DomSanitizer) { }
+  constructor(private sanitizer: DomSanitizer) { }
 
-  sanitizar(cadena){
+  sanitizar(cadena) {
     /*cadena = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + cadena);
     return cadena*/
     if (cadena) {
       //cadena = this.sanitizer.bypassSecurityTrustUrl('data:image/png;base64,' + cadena);
       cadena = this.sanitizer.bypassSecurityTrustUrl(cadena);
-    return cadena
+      return cadena
     } else {
       return null;
     }
   }
 
-  sanitizarPdf(cadena){
+  sanitizarPdf(cadena) {
     if (cadena) {
       const byteCharacters = atob(cadena);
       const byteNumbers = new Array(byteCharacters.length);
@@ -43,13 +43,13 @@ export class PetitionsService {
       const url = URL.createObjectURL(blob);
 
       return url
-    //return cadena
+      //return cadena
     } else {
       return null;
     }
   }
 
-  sanitizarPDF_main(cadena){
+  sanitizarPDF_main(cadena) {
     const pdfUrl = `data:application/pdf;base64,${cadena}`;
     return this.sanitizer.bypassSecurityTrustResourceUrl(pdfUrl);
   }

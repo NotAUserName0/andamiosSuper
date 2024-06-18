@@ -55,15 +55,11 @@ export class InicioComponent {
 
   obtenerCarrusel() {
     this.andamiosService.obtenerCarrusel().subscribe((data) => {
-      this.slides = data
-
-      for (let i = 0; i < this.slides.length; i++) {
-        this.slides[i].file = this.petitionsService.sanitizar(this.slides[i].file)
-        this.slides[i].fileResponsive = this.petitionsService.sanitizar(this.slides[i].fileResponsive)
-      }
-
-      /*this.actual = 0
-      this.slide = this.slides[this.actual]?.file*/
+      /*data.forEach((element: Carrusel) => {
+        element.file = this.petitionsService.sanitizar(element.file)
+        element.fileResponsive = this.petitionsService.sanitizar(element.fileResponsive)
+      })*/
+      this.slides = data;
     })
   }
 

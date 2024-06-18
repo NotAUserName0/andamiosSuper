@@ -8,6 +8,7 @@ import { MatIcon } from '@angular/material/icon';
 import { PetitionsService } from '../../../petitions.service';
 import { CommonModule } from '@angular/common';
 import { SpinnerComponent } from '../../../spinner/spinner.component';
+import { SeoService } from '../../../seo.service';
 
 @Component({
   selector: 'app-categorias',
@@ -26,9 +27,10 @@ export class CategoriasComponent {
   loading:boolean = false
 
   constructor(private andmiosService: AndamiosService, private route: ActivatedRoute,
-    private petitionService:PetitionsService
+    private petitionService:PetitionsService, private seo:SeoService
   ) {
     this.loading = true
+
     afterRender(()=>{
       window.scrollTo(0,0)
     })
@@ -39,7 +41,7 @@ export class CategoriasComponent {
 
       this.andmiosService.obtenerTipoCategoria(params['url']).subscribe((data:Categoria) => {
         this.categoria = data
-
+        this.seo.actualizarTitulo(this.categoria.nombre)
         const elemento = {
           tipo: this.categoria.tipo,
           id: this.categoria.id
@@ -47,7 +49,12 @@ export class CategoriasComponent {
 
         this.andmiosService.obtenerSecciones(elemento).subscribe((data:Seccion[]) => {
 
-          data.forEach((seccion:Seccion) => {
+          data.forEach((seccion:Seccion, index) => {
+
+            this.seo.generateTags({
+              title: this.categoria.nombre,
+            })
+
             if(seccion.imagen_inicio){
               seccion.imagen_inicio = this.petitionService.sanitizar(seccion.imagen_inicio)
 
