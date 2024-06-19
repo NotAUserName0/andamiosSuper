@@ -111,6 +111,7 @@ export class SucursalesAndamiosComponent {
       const formData = new FormData()
       const main = true;
       formData.append(file.name, file, file.name)
+      formData.append("division",this.division)
       formData.append("main",main.toString())
 
       this.accionesService.agregarImagenSucursal(formData).subscribe(()=>{
