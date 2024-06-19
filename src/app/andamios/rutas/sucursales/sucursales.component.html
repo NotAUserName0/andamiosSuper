@@ -1,0 +1,30 @@
+<div class="contenedor" [@fadeIn]>
+  <div class="title">Nuestra Capacidad</div>
+  <img [src]="img?.file" alt="">
+
+  <div class="sucursales">
+
+    @for (sucursal of sucursales; track sucursal) {
+    <div class="elemento">
+      <div class="nombre">{{sucursal.nombre}}</div>
+      <div class="direccion"><mat-icon>map</mat-icon>
+        <div class="inner">{{sucursal.direccion}}</div>
+      </div>
+      <div class="telefonos">
+        <mat-icon>phone</mat-icon>
+        <div class="telefono">
+          @for (telefono of sucursal.telefono; track telefono) {
+          <div class="dato">{{telefono}}</div>
+          }
+
+        </div>
+      </div>
+      <div class="url">
+        <mat-icon>explore</mat-icon>
+        <a href="{{sucursal.maps}}"> Como llegar </a>
+      </div>
+    </div>
+    }
+
+  </div>
+</div>

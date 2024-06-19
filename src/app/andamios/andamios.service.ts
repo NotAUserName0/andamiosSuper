@@ -6,6 +6,8 @@ import { Anuncio } from './models/anuncio';
 import { PetitionsService } from '../petitions.service';
 import { Seccion } from './models/seccion';
 import { Categoria } from './models/categoria';
+import { Sucursal } from './models/sucursal';
+import { Imagen } from './models/imagen';
 
 @Injectable({
   providedIn: 'root'
@@ -39,4 +41,13 @@ export class AndamiosService {
   obtenerSecciones(categoria:any):Observable<Seccion[]>{
     return this.http.post<Seccion[]>(`${this.URL}obtenerSecciones`,categoria,this.petition.httpOptions)
   }
+
+  obtenerImaganSucursal(division:string):Observable<Imagen>{
+    return this.http.get<Imagen>(`${this.URL}obtenerImagenSucursal/${division}`)
+  }
+
+  obtenerSucursales(division:string):Observable<Sucursal[]>{
+    return this.http.get<Sucursal[]>(`${this.URL}obtenerSucursales/${division}`)
+  }
+
 }

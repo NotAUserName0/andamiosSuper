@@ -1,0 +1,223 @@
+.contenedor {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sucursales {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  padding: 10px 60px;
+}
+
+.title {
+  width: auto;
+  font-weight: 500;
+  font-size: 50px;
+  color: black;
+  padding-bottom: 15px;
+  border-bottom: 2px solid var(--color-primario);
+  margin: 40px auto 30px auto;
+}
+
+.nombre {
+  text-align: center;
+  color: var(--color-primario);
+  font-size: 25px;
+}
+
+.direccion {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.inner{
+  width: 80%;
+}
+
+mat-icon {
+  width: auto;
+  height: auto;
+  font-size: 45px;
+  color: var(--color-primario);
+  margin-right: 20px;
+}
+
+.telefonos {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+.telefono {
+  display: flex;
+  flex-direction: column;
+}
+
+.url {
+  display: flex;
+  align-items: center;
+
+  color: black;
+}
+
+a {
+  display: inline-block;
+  text-decoration: none;
+position: relative;
+color: black;
+}
+
+a:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--color-primario);
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+a:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
+
+.nombre{
+  font-size: 25px;
+  font-weight: 500;
+  margin-bottom: 10px;
+  color: var(--color-primario);
+}
+
+.dato{
+  margin: 5px 0;
+}
+
+.elemento div{
+  padding: 5px 0;
+}
+
+@media only screen and (min-width: 200px) and (max-width: 299px){
+  .contenedor{
+    margin-top: 60px;
+  }
+
+  .title{
+    font-size: 30px;
+    text-align: center;
+    width: 80%;
+  }
+
+  img{
+    width: 80%;
+    height: 80%;
+  }
+
+  .sucursales {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 20px;
+    padding: 10px 20px;
+  }
+
+  .nombre{
+    font-size: 18px;
+  }
+
+  .direccion, .dato, .url{
+    font-size: 15px;
+  }
+
+  mat-icon{
+    font-size: 25px;
+    width: auto;
+    height: auto;
+    margin-right: 15px;
+  }
+}
+
+@media only screen and (min-width: 300px) and (max-width: 749px){
+
+  .contenedor{
+    margin-top: 60px;
+  }
+
+  .title{
+    text-align: center;
+    width: 80%;
+  }
+
+  img{
+    width: 80%;
+    height: 80%;
+  }
+
+  .sucursales {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-gap: 20px;
+    padding: 10px 20px;
+  }
+
+  .nombre{
+    font-size: 20px;
+  }
+
+  mat-icon{
+    font-size: 30px;
+    width: auto;
+    height: auto;
+  }
+
+}
+
+@media only screen and (min-width: 750px) and (max-width: 999px){
+  .contenedor{
+    margin-top: 60px;
+  }
+
+  .title{
+    text-align: center;
+    width: 80%;
+  }
+
+  img{
+    width: 80%;
+    height: 80%;
+  }
+
+  .sucursales {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+    padding: 10px 20px;
+  }
+
+  .nombre{
+    font-size: 20px;
+  }
+
+  mat-icon{
+    font-size: 30px;
+    width: auto;
+    height: auto;
+  }
+}
+
+@media only screen and (min-width: 1000px) and (max-width: 1199px){
+
+}

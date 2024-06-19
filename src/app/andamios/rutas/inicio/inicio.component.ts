@@ -5,6 +5,7 @@ import { fromEvent } from 'rxjs';
 import { PetitionsService } from '../../../petitions.service';
 import { Anuncio } from '../../models/anuncio';
 import { SpinnerComponent } from '../../../spinner/spinner.component';
+import { SeoService } from '../../../seo.service';
 
 @Component({
   selector: 'app-inicio',
@@ -24,12 +25,18 @@ export class InicioComponent {
   imgResponsive: boolean = false;
   loading: boolean = false
 
-  constructor(private andamiosService: AndamiosService, private petitionsService: PetitionsService) {
+  seoTags:string
+
+  constructor(private andamiosService: AndamiosService,
+    private petitionsService: PetitionsService, private seo:SeoService) {
+
+      this.seo.actualizarTitulo("Andamios Atlas")
 
       this.loading = true;
       this.obtenerCarrusel()
       this.obtenerAnuncio()
       this.obtenerInicio()
+
       afterRender(() => {
         window.scrollTo(0, 0)
         this.resizeSubscription = fromEvent(window, 'resize').subscribe(() => {
@@ -72,14 +79,29 @@ export class InicioComponent {
   obtenerInicio() {
     this.andamiosService.obtenerInicio().subscribe((data: any[]) => {
 
-      for (let i = 0; i < data.length; i++) {
+      /*for (let i = 0; i < data.length; i++) {
         data[i].banner = this.petitionsService.sanitizar(data[i].banner)
         for (let j = 0; j < data[i].secciones.length; j++) {
           data[i].secciones[j].imagen_inicio = this.petitionsService.sanitizar(data[i].secciones[j].imagen_inicio)
         }
-      }
+      }*/
 
       this.elementos = data;
+
+      this.elementos.forEach(element => {
+        console.log(element.titulo)
+        if(element.secciones.length > 0){
+          element.secciones.forEach(seccion => {
+            console.log(seccion.nombre)
+            this.seo.generateTags({
+              title: element.titulo,
+              description: seccion.nombre
+            })
+          })
+        }
+      });
+
+
       this.loading = false;
     })
   }

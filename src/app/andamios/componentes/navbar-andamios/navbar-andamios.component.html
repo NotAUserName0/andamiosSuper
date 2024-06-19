@@ -15,17 +15,17 @@
 
     @for (categoria of navbar; track categoria) {
     <div class="item-categoria">
-      <a href="/andamios/categoria/{{categoria.url}}" routerLink="/andamios/categoria/{{categoria.url}}">{{
+      <a href="/andamios/categoria/{{categoria.url}}" routerLink="/andamios/categoria/{{categoria.url}}" routerLinkActive="active">{{
         categoria.titulo }}</a>
         @if(categoria.tipo === 'A'){
           <div class="secciones">
             @for (seccion of categoria.secciones; track seccion) {
             <div class="item-seccion">
               <a href="/andamios/seccion/{{seccion.url}}"
-                routerLink="/andamios/seccion/{{seccion.url}}">{{seccion.titulo}}</a>
+                routerLink="/andamios/seccion/{{seccion.url}}" routerLinkActive="active">{{seccion.titulo}}</a>
               <div class="subsecciones">
                 @for (subseccion of seccion.subsecciones; track subseccion) {
-                <a class="item-subseccion" href="/andamios/subseccion/{{subseccion.url}}">{{subseccion.nombre}}</a>
+                <a class="item-subseccion" href="/andamios/subseccion/{{subseccion.url}}" routerLinkActive="active">{{subseccion.nombre}}</a>
                 }
               </div>
             </div>
@@ -36,11 +36,11 @@
     }
 
     <div class="item-categoria">
-      <a href="/quienes-somos">Sucursales</a>
+      <a href="/andamios/sucursales" routerLink="/andamios/sucursales" routerLinkActive="active">Sucursales</a>
     </div>
 
     <div class="item-categoria">
-      <a href="/andamios/contacto">Contacto</a>
+      <a href="/andamios/contacto" routerLink="/andamios/contacto" routerLinkActive="active">Contacto</a>
     </div>
   </div>
 
@@ -53,7 +53,7 @@
 
     @for (categoria of navbar; track categoria) {
     <div class="item-categoria">
-      <a href="/andamios/categoria/{{categoria.url}}" routerLink="/andamios/categoria/{{categoria.url}}"
+      <a href="/andamios/categoria/{{categoria.url}}" routerLink="/andamios/categoria/{{categoria.url}}" routerLinkActive="active"
       (click)="toggleIcon()">{{
         categoria.titulo }}</a>
     </div>
