@@ -888,10 +888,10 @@ async function obtenerImagenSucursal(req,res){
 
 async function agregarImagenSucursal(req,res){
     try{
-        const {id_sucursal, main} = req.body
+        const {id_sucursal, main, division} = req.body
         const file = req.files[0]
 
-        await Imagenes_Sucursales.create({nombre:file.fieldname, file:  "data:image/*;base64,"+file.buffer.toString('base64'), id_sucursal:id_sucursal, main:Boolean(main)}).then(()=>{
+        await Imagenes_Sucursales.create({nombre:file.fieldname, file:  "data:image/*;base64,"+file.buffer.toString('base64'), id_sucursal:id_sucursal, main:Boolean(main), division:division}).then(()=>{
             res.status(200).json({message:"ok"})
         }).catch((err)=>{
             res.status(500).json({message:"error: "+err})

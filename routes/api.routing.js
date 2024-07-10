@@ -12,6 +12,8 @@ router.get('/obtenerCarrusel',api.obtenerCarrusel)
 router.get('/obtenerAnuncio', api.obtenerAnuncio)
 router.get('/obtenerInicio/:area', api.obtenerInicio)
 router.get('/obtenerTipoCategoria/:url', api.obtenerTipoCategoria)
+router.get('/obtenerImagenSucursal/:division', api.obtenerImagenSucursal)
+router.get('/obtenerSucursales/:division', api.obtenerSucursales)
 
 router.post('/crearSolicitud',upload.any(),api.crearSolicitud)
 

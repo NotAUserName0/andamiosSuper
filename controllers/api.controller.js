@@ -8,6 +8,8 @@ const Carrusel = require("../models/andamios/carrusel")
 const Anuncio = require("../models/andamios/anuncio")
 const Imagenes_Seccion = require("../models/general/imagenes_seccion")
 const Archivos_Seccion = require("../models/general/archivos_seccion")
+const Imagenes_Sucursales = require("../models/general/imagenes_sucursales")
+const Sucursales = require("../models/general/sucursales")
 
 async function obtenerArchivo(req, res) {
     const { origen } = req.params
@@ -277,6 +279,32 @@ async function obtenerSecciones(req, res) {
 
 }
 
+async function obtenerImagenSucursal(req,res){
+    try{
+
+        const {division} = req.params
+
+        const imagenes = await Imagenes_Sucursales.findOne({where:{division:division}})
+        res.status(200).send(imagenes)
+
+    }catch(err){
+        res.status(500).json({message: "error"})
+    }
+}
+
+async function obtenerSucursales(req,res){
+    try{
+        const {division} = req.params
+
+        const sucursales = await Sucursales.findAll({where:{division:division}})
+
+        res.status(200).send(sucursales)
+
+    }catch(err){
+        res.status(500).json({message: "error"})
+    }
+}
+
 module.exports = {
     obtenerArchivo,
     obtenerComunicados,
@@ -286,5 +314,7 @@ module.exports = {
     obtenerAnuncio,
     obtenerInicio,
     obtenerTipoCategoria,
-    obtenerSecciones
+    obtenerSecciones,
+    obtenerImagenSucursal,
+    obtenerSucursales
 }
