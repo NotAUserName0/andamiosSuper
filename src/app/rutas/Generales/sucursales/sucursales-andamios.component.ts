@@ -38,6 +38,8 @@ export class SucursalesAndamiosComponent {
     })
   }
 
+  //actualizacion
+
   obtenerSucursales(){
     this.accionesService.obtenerSucursales(this.division).subscribe((data:Sucursal[]) => {
       this.sucursales = data;
